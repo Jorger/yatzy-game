@@ -1,0 +1,105 @@
+.board-item {
+  --point: radial-gradient(circle, white 40%, rgba(255, 255, 255, 0) 50%);
+  --bg-shadow: #b95c00;
+}
+
+.board-item {
+  background-image: radial-gradient(
+    circle,
+    var(--bg-yellow),
+    var(--bg-dark-yellow),
+    var(--bg-dark-yellow2),
+    var(--bg-dark-yellow3),
+    var(--bg-dark-yellow4)
+  );
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  position: relative;
+}
+
+.board-item.upper_section::after {
+  background-repeat: no-repeat;
+  background-size: 30% 30%;
+  content: "";
+  filter: drop-shadow(0 0 3px var(--bg-shadow));
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+}
+
+.board-item.dice-1::after {
+  background-image: var(--point);
+  background-position: 50% 50%;
+}
+
+.board-item.dice-2::after {
+  background-image: var(--point), var(--point);
+  background-position: 20% 80%, 80% 20%;
+}
+
+.board-item.dice-3::after {
+  background-image: var(--point), var(--point), var(--point);
+  background-position: 20% 80%, 50% 50%, 80% 20%;
+}
+
+.board-item.dice-4::after {
+  background-image: var(--point), var(--point), var(--point), var(--point);
+  background-position: 20% 80%, 20% 20%, 80% 20%, 80% 80%;
+}
+
+.board-item.dice-5::after {
+  background-image: var(--point), var(--point), var(--point), var(--point),
+    var(--point);
+  background-position: 20% 80%, 20% 20%, 50% 50%, 80% 20%, 80% 80%;
+}
+
+.board-item.dice-6::after {
+  background-image: var(--point), var(--point), var(--point), var(--point),
+    var(--point), var(--point);
+  background-position: 20% 80%, 20% 20%, 20% 50%, 80% 20%, 80% 80%, 80% 50%;
+}
+
+/* Lower section */
+.board-item.lower_section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 23px;
+  font-weight: bold;
+  color: var(--bg-white);
+  text-shadow: 1px 1px 5px var(--bg-shadow);
+}
+
+.board-item-yatzy {
+  font-size: 16px;
+  text-transform: lowercase;
+}
+
+.board-item .icon-full-house {
+  width: 55%;
+  height: 55%;
+  filter: drop-shadow(0 0 3px var(--bg-shadow));
+}
+
+.board-item .board-item-straight {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  height: 100%;
+  justify-content: center;
+  text-transform: lowercase;
+  width: 100%;
+}
+
+.board-item-straight .icon-cards {
+  width: 45%;
+  height: 45%;
+  filter: drop-shadow(0 0 3px var(--bg-shadow));
+}
+
+.board-item-straight div:nth-child(2) {
+  transform: translateY(10%);
+}

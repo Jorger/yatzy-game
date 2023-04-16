@@ -1,10 +1,13 @@
 import { AppWrapper } from "./components/wrappers";
+import Game from "./components/game";
 import React from "react";
 
 const App = () => {
   return (
     <AppWrapper>
-      <div>Información</div>
+      <div>
+        <Game />
+      </div>
     </AppWrapper>
   );
 };
