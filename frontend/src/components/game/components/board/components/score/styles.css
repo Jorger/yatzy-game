@@ -1,0 +1,80 @@
+.board-panel-score {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.board-panel-score-bonus {
+  align-items: center;
+  background-color: var(--bg-sky-blue);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  justify-content: center;
+  text-transform: uppercase;
+  width: 30%;
+}
+
+.board-panel-score-bonus div {
+  text-align: center;
+}
+
+.board-panel-score-bonus div:first-child {
+  color: var(--bg-dark-sky-blue);
+  font-size: 10px;
+}
+
+.board-panel-score-bonus div:nth-child(2) {
+  color: var(--bg-white);
+  font-size: 23px;
+  text-shadow: 1px 3px 2px var(--bg-royal-blue);
+}
+
+.board-panel-score-items {
+  display: flex;
+  width: 70%;
+}
+
+.board-panel-score-item,
+.board-panel-score-bonus-earned {
+  align-items: center;
+  background-color: var(--bg-bright-sky-blue);
+  border-radius: 50%;
+  border: 3px solid var(--bg-dark-sky-blue);
+  color: var(--bg-dark-sky-blue);
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  margin: 0 7px;
+  width: 55px;
+}
+
+.board-panel-score-item-score {
+  font-size: 18px;
+}
+
+.board-panel-score-item-bonus {
+  font-size: 11px;
+}
+
+/* Bono */
+.board-panel-score-bonus-earned {
+  animation: bounceIn 1.2s both;
+  background-color: var(--bg-dark-yellow5);
+  position: relative;
+}
+
+.board-panel-score-bonus-earned span {
+  color: var(--bg-white);
+  font-size: 22px;
+  text-shadow: 1px 1px 3px var(--bg-royal-blue);
+}
+
+.board-panel-score-bonus-earned .icon-check {
+  bottom: -10px;
+  filter: drop-shadow(0 0 1px var(--bg-dark-sky-blue2));
+  left: 32%;
+  position: absolute;
+  width: 21px;
+}

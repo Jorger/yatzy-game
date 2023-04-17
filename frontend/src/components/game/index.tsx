@@ -1,32 +1,34 @@
-// import { valueDice } from "../../interfaces";
-// import { BoardItem } from "./components/board/components";
-import React from "react";
-import { Board } from "./components";
+import { Board, GameWrapper } from "./components";
+import { ETypeGame } from "../../utils/constants";
+import { getInitalBoardState, getInitialPlayers } from "./helpers";
+import { TypeGame } from "../../interfaces";
+import React, { useState } from "react";
 
-const Game = () => {
+interface GameProps {
+  typeGame?: TypeGame;
+}
+
+const Game = ({ typeGame = ETypeGame.SOLO }: GameProps) => {
+  // Guarda el estado del board
+  // setBoardState
+  const [boardState] = useState(getInitalBoardState);
+  // Estado de los jugadores del juego (máximo serán dos)...
+  // setPlayers
+  const [players] = useState(() => getInitialPlayers(typeGame));
+
   return (
-    <div style={{ width: "100%" }}>
-      <Board typeGame="ONLINE" />
-      {/* <Board /> */}
-      {/* {new Array(6).fill(null).map((_, key) => {
-        return (
-          <BoardItem
-            key={key}
-            type="UPPER_SECTION"
-            label={`Dice ${key + 1}`}
-            value={(key + 1) as valueDice}
-          />
-        );
-      })}
-
-      <BoardItem type="LOWER_SECTION" value="THREE_KIND" />
-      <BoardItem type="LOWER_SECTION" value="FOUR_KIND" />
-      <BoardItem type="LOWER_SECTION" value="FULL_HOUSE" />
-      <BoardItem type="LOWER_SECTION" value="SMALL_STRAIGHT" />
-      <BoardItem type="LOWER_SECTION" value="LARGE_STRAIGHT" />
-      <BoardItem type="LOWER_SECTION" value="YATZY" />
-      <BoardItem type="LOWER_SECTION" value="CHANCE" /> */}
-    </div>
+    <GameWrapper>
+      <Board
+        items={boardState}
+        players={players}
+        thrownDice={true}
+        turn={1}
+        typeGame={typeGame}
+        handleClick={(item, player) => {
+          console.log(item, player);
+        }}
+      />
+    </GameWrapper>
   );
 };
 

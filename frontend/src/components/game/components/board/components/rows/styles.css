@@ -1,0 +1,109 @@
+.board-panel-row-category {
+  display: flex;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-panel-row-item {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 30%;
+}
+
+.board-panel-row-score {
+  height: 95%;
+  width: 70%;
+  display: flex;
+}
+
+.board-panel-row-score-label {
+  align-items: center;
+  color: var(--bg-white);
+  display: flex;
+  font-size: 15px;
+  font-weight: bold;
+  justify-content: center;
+  margin: 0 6px;
+  text-align: center;
+  text-transform: lowercase;
+  width: 100%;
+}
+
+.board-panel-row-score-button {
+  align-items: center;
+  background-color: transparent;
+  border-radius: 7px;
+  border: none;
+  color: var(--bg-light-blue);
+  cursor: pointer;
+  display: flex;
+  font-size: 28px;
+  font-weight: bold;
+  justify-content: center;
+  margin: 0 6px;
+  position: relative;
+  text-align: center;
+  transition: all 0.8s;
+  width: 100%;
+}
+
+.board-panel-row-score-button.turn {
+  background-color: var(--bg-light-blue);
+}
+
+.board-panel-row-score-button.active {
+  color: var(--bg-light-blue2);
+}
+
+.board-panel-row-score-button.used,
+.board-panel-row-score-button.used-score {
+  background-color: var(--bg-blue);
+  color: var(--bg-white);
+  text-shadow: 1px 3px 2px var(--bg-dark-blue);
+}
+
+.board-panel-row-score-button.used-score {
+  background-color: transparent;
+  animation: flip 0.5s both;
+}
+
+.board-panel-row-score-button.selected {
+  animation: bounceIn 0.5s both;
+  text-shadow: none;
+  color: var(--bg-blue2);
+  background-image: radial-gradient(
+    circle,
+    var(--bg-white),
+    var(--bg-pale-blue),
+    var(--bg-light-pale-blue),
+    var(--bg-lighter-pale-blue),
+    var(--bg-pale-blue2)
+  );
+}
+
+.board-panel-row-score-button.used,
+.board-panel-row-score-button.selected,
+.board-panel-row-score-button.used-score {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.board-panel-row-score-button span {
+  align-items: center;
+  animation: bounceIn 1.2s both;
+  background-color: var(--bg-salmon);
+  border-radius: 50%;
+  border: 1px solid var(--bg-white);
+  color: var(--bg-white);
+  display: flex;
+  font-size: 12px;
+  height: 20px;
+  justify-content: center;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  width: 20px;
+}
