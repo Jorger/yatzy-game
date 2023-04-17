@@ -1,11 +1,14 @@
-import { valueDice } from "../../interfaces";
-import { BoardItem } from "./components/board/components";
+// import { valueDice } from "../../interfaces";
+// import { BoardItem } from "./components/board/components";
 import React from "react";
+import { Board } from "./components";
 
 const Game = () => {
   return (
-    <div>
-      {new Array(6).fill(null).map((_, key) => {
+    <div style={{ width: "100%" }}>
+      <Board typeGame="ONLINE" />
+      {/* <Board /> */}
+      {/* {new Array(6).fill(null).map((_, key) => {
         return (
           <BoardItem
             key={key}
@@ -22,7 +25,7 @@ const Game = () => {
       <BoardItem type="LOWER_SECTION" value="SMALL_STRAIGHT" />
       <BoardItem type="LOWER_SECTION" value="LARGE_STRAIGHT" />
       <BoardItem type="LOWER_SECTION" value="YATZY" />
-      <BoardItem type="LOWER_SECTION" value="CHANCE" />
+      <BoardItem type="LOWER_SECTION" value="CHANCE" /> */}
     </div>
   );
 };
