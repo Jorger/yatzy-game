@@ -1,18 +1,27 @@
-import { BoardHeader, BoardWrapper } from "./components";
-import { ETypeGame } from "../../../../utils/constants";
+import { BoardHeader, BoardTable, BoardWrapper } from "./components";
 import React from "react";
-import type { TypeGame } from "../../../../interfaces";
+import type {
+  IBoard,
+  IBoardItem,
+  Player,
+  TotalPlayers,
+  TypeGame,
+} from "../../../../interfaces";
 
 interface BoardProps {
+  items: IBoard;
+  players: Player[];
+  thrownDice?: boolean;
+  turn?: TotalPlayers;
   typeGame?: TypeGame;
+  handleClick: (item: IBoardItem, player: TotalPlayers) => void;
 }
 
-const Board = ({ typeGame = ETypeGame.SOLO }: BoardProps) => {
-  return (
-    <BoardWrapper>
-      <BoardHeader typeGame={typeGame} />
-    </BoardWrapper>
-  );
-};
+const Board = (props: BoardProps) => (
+  <BoardWrapper>
+    <BoardHeader typeGame={props.typeGame as TypeGame} />
+    <BoardTable {...props} />
+  </BoardWrapper>
+);
 
 export default React.memo(Board);
