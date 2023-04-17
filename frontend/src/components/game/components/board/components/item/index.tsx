@@ -6,6 +6,7 @@ import type {
   valueDice,
   CategoriesType,
 } from "../../../../../../interfaces";
+import { EItemType } from "../../../../../../utils/constants";
 
 interface ItemProps {
   label?: string;
@@ -17,17 +18,18 @@ interface ItemProps {
 const Item = ({
   label = "",
   size = 50,
-  type = "UPPER_SECTION",
+  type = EItemType.UPPER_SECTION,
   value = 1,
 }: ItemProps) => (
   <div
     className={`board-item ${type.toLowerCase()} ${
-      type === "UPPER_SECTION" ? `dice-${value}` : ""
+      type === EItemType.UPPER_SECTION ? `dice-${value}` : ""
     }`}
     style={{ width: size, height: size }}
     title={label || value.toString()}
   >
-    {type === "LOWER_SECTION" && LOWER_SECTION_OPTIONS[value as CategoriesType]}
+    {type === EItemType.LOWER_SECTION &&
+      LOWER_SECTION_OPTIONS[value as CategoriesType]}
   </div>
 );
 

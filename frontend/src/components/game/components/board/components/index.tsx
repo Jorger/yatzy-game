@@ -1,3 +1,5 @@
+import BoardHeader from "./header";
 import BoardItem from "./item";
+import BoardWrapper from "./wrapper";
 
-export { BoardItem };
+export { BoardHeader, BoardItem, BoardWrapper };

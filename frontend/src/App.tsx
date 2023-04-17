@@ -5,9 +5,7 @@ import React from "react";
 const App = () => {
   return (
     <AppWrapper>
-      <div>
-        <Game />
-      </div>
+      <Game />
     </AppWrapper>
   );
 };

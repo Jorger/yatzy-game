@@ -1,0 +1,33 @@
+.board-header {
+  display: flex;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.board-header-panel {
+  align-items: center;
+  color: var(--bg-white);
+  display: flex;
+  font-size: 15px;
+  font-weight: bold;
+  justify-content: center;
+  width: 100%;
+  height: 15px;
+}
+
+.board-header-panel:nth-child(2) {
+  transform: translateX(-15px);
+}
+
+.board-header-panel-player {
+  display: flex;
+  font-size: 12px;
+  transform: translateX(40px);
+  width: 80%;
+}
+
+.board-header-panel-player div {
+  text-align: center;
+  text-shadow: 1px 0px 1px var(--bg-navy);
+  width: 45%;
+}
