@@ -1,0 +1,18 @@
+.header-players-countdown {
+  align-items: center;
+  background-color: var(--bg-bright-green);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  color: var(--bg-white);
+  display: flex;
+  font-size: 18px;
+  font-weight: bold;
+  height: 25px;
+  justify-content: center;
+  padding-top: 2px;
+  width: 30px;
+}
+
+.header-players-countdown.end-time {
+  background-color: var(--bg-salmon);
+}
