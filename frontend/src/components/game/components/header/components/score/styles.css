@@ -1,0 +1,44 @@
+.header-players-item {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.header-players-item-score {
+  border-radius: 5px;
+  color: var(--bg-white);
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 3px;
+  padding: 3px;
+  text-align: center;
+  text-shadow: 0px 3px 1px var(--bg-navy);
+  transition: all 0.5s;
+  width: 55px;
+}
+
+.header-players-item-score.selected {
+  background-color: var(--bg-bright-sky-blue);
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+.header-players-item-name {
+  color: var(--bg-white);
+  font-size: 13px;
+  font-weight: bold;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 130px;
+}
+
+.header-players-item-countdown {
+  position: absolute;
+  right: 10%;
+  top: 10%;
+}

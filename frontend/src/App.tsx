@@ -5,7 +5,7 @@ import React from "react";
 const App = () => {
   return (
     <AppWrapper>
-      <Game typeGame="ONLINE" />
+      <Game typeGame="FRIEND" initialTurn={2} />
     </AppWrapper>
   );
 };

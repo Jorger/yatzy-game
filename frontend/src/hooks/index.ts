@@ -1,3 +1,4 @@
+import useInterval from "./useInterval";
 import useWindowResize from "./useWindowResize";
 
-export { useWindowResize };
+export { useInterval, useWindowResize };

@@ -1,0 +1,29 @@
+.circular-button {
+  align-items: center;
+  background-color: var(--bg-gold);
+  border-radius: 50%;
+  border: none;
+  box-shadow: rgb(50 50 93 / 25%) 0px 13px 27px -5px,
+    rgb(0 0 0 / 30%) 0px 8px 16px -8px,
+    inset var(--bg-light-orange) 0px -3px 5px 0px;
+  cursor: pointer;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.circular-button .icon-wrapper {
+  filter: drop-shadow(0 0 3px var(--bg-dark-gold));
+}
+
+.circular-button .icon-back {
+  margin-top: 2px;
+  width: 80%;
+}
+
+.circular-button .icon-sound-on,
+.circular-button .icon-sound-off {
+  width: 70%;
+  height: 70%;
+}

@@ -7,6 +7,7 @@ import {
 import Icon from "../../../../../icon";
 import React from "react";
 import type { Player } from "../../../../../../interfaces";
+import { ScoreCounter } from "../../..";
 
 const BoardScoreBonus = () => (
   <div className="board-panel-score-bonus">
@@ -17,7 +18,7 @@ const BoardScoreBonus = () => (
 
 const BoardScoreItem = ({ value = 0 }: { value: number }) => (
   <div className="board-panel-score-item">
-    <div className="board-panel-score-item-score">{value}</div>
+    <ScoreCounter score={value} className="board-panel-score-item-score" />
     <div className="board-panel-score-item-bonus">/{MIN_SCORE_BONUS}</div>
   </div>
 );

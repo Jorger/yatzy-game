@@ -1,0 +1,17 @@
+.header-wrapper {
+  align-items: center;
+  background-image: linear-gradient(
+    to top,
+    var(--bg-dark-blue2),
+    var(--bg-deep-blue2),
+    var(--bg-stronger-blue),
+    var(--bg-dark-blue3),
+    var(--bg-dark-blue4)
+  );
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+}
