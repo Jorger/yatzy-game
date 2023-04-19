@@ -1,4 +1,15 @@
+import { randomNumber } from "../../utils/helpers";
+import {
+  CATEGORIES,
+  EItemType,
+  ETypeGame,
+  LABELS_GAME,
+  LOWER_SECTION_LABELS,
+  UPPER_SECTION_LABELS,
+} from "../../utils/constants";
+import cloneDeep from "lodash.clonedeep";
 import type {
+  DiceValue,
   IBoard,
   IBoardItem,
   IScore,
@@ -8,14 +19,6 @@ import type {
   TypeGame,
   valueDice,
 } from "../../interfaces";
-import {
-  CATEGORIES,
-  EItemType,
-  ETypeGame,
-  LABELS_GAME,
-  LOWER_SECTION_LABELS,
-  UPPER_SECTION_LABELS,
-} from "../../utils/constants";
 
 /**
  * Crea el estado inicial del board
@@ -120,4 +123,47 @@ export const getInitialPlayers = (
   }
 
   return players;
+};
+
+/**
+ * Genera los datos iniciales de los dados...
+ */
+export const getInitialDiceValues = () =>
+  new Array(5).fill(null).map(
+    (_, index) =>
+      ({
+        index,
+        value: 0,
+        selected: false,
+      } as DiceValue)
+  );
+
+/**
+ * Función que genera los valores de los dados...
+ * @param diceValues
+ * @returns
+ */
+export const rollDice = (diceValues: DiceValue[]) => {
+  const copyDiceValues = cloneDeep(diceValues);
+
+  for (let i = 0; i < copyDiceValues.length; i++) {
+    if (!copyDiceValues[i].selected) {
+      copyDiceValues[i].value = randomNumber(1, 6) as valueDice;
+    }
+  }
+
+  return copyDiceValues;
+};
+
+/**
+ * Función que establece cuando un dado ha sido seleccioando...
+ * @param diceValues
+ * @param diceIndex
+ * @returns
+ */
+export const selectDice = (diceValues: DiceValue[], diceIndex: number = 0) => {
+  const copyDiceValues = cloneDeep(diceValues);
+  copyDiceValues[diceIndex].selected = !copyDiceValues[diceIndex].selected;
+
+  return copyDiceValues;
 };

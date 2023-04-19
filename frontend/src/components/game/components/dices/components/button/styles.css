@@ -1,0 +1,52 @@
+.dices-button {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 15px;
+  cursor: pointer;
+  border: 5px solid var(--bg-deep-blue);
+  background-color: var(--bg-strong-blue);
+  box-shadow: inset rgb(0 0 0 / 15%) 0px 5px 3px 1px,
+    rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset, rgb(0 0 0 / 16%) 0px 1px 4px,
+    var(--bg-deep-blue) 0px 0px 0px 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.dices-button:not(:last-child) {
+  margin-right: 10px;
+}
+
+.dices-button.selected {
+  border: 5px solid var(--bg-golden);
+  box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px, var(--bg-golden) 0px 0px 0px 2px;
+}
+
+.dices-button .dice {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.dices-button.hide .dice {
+  visibility: hidden;
+}
+
+.dices-button .die-container {
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+.dices-button .face {
+  border-radius: 8px;
+  outline-width: 2px !important;
+}
