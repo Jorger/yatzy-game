@@ -167,3 +167,12 @@ export const selectDice = (diceValues: DiceValue[], diceIndex: number = 0) => {
 
   return copyDiceValues;
 };
+
+/**
+ * Devuelve la cantidad de dados que se pueden mover.
+ * útil para saber si el botón de roll estará habilitado...
+ * @param diceValues
+ * @returns
+ */
+export const totalDiceAvailable = (diceValues: DiceValue[]) =>
+  diceValues.filter((v) => !v.selected).length;
