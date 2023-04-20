@@ -1,0 +1,37 @@
+.game-buttons {
+  display: flex;
+  padding: 10px 15px;
+  width: 100%;
+}
+
+.game-buttons .button {
+  font-size: 30px;
+  font-weight: bold;
+  height: 50px;
+  text-transform: uppercase;
+  transition: opacity 0.8s;
+  width: 100%;
+}
+
+.game-buttons .button:not(:last-child) {
+  margin-right: 15px;
+}
+
+.game-buttons-roll {
+  position: relative;
+}
+
+.game-buttons-roll span {
+  align-items: center;
+  background-color: var(--bg-orange);
+  border-radius: 50%;
+  color: var(--bg-white);
+  display: flex;
+  font-size: 17px;
+  height: 25px;
+  justify-content: center;
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  width: 25px;
+}
