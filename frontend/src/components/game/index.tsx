@@ -1,10 +1,13 @@
 import { Board, Buttons, Dices, GameWrapper, Header } from "./components";
 import {
+  calculateBoardValues,
+  deselectBoardItemBoard,
   getInitalBoardState,
   getInitialDiceValues,
   getInitialPlayers,
   rollDice,
   selectDice,
+  selectItemBoard,
   totalDiceAvailable,
 } from "./helpers";
 import {
@@ -12,12 +15,15 @@ import {
   EDiceTheme,
   ETypeButtonGame,
   ETypeGame,
+  INITIAL_ITEM_SELECTED,
   TOTAL_THROWING,
 } from "../../utils/constants";
 import React, { useState } from "react";
 import type {
   DiceState,
   DiceTheme,
+  IBoardItem,
+  ItemSelectedBoard,
   TotalPlayers,
   TypeButtonGame,
   TypeGame,
@@ -30,26 +36,46 @@ interface GameProps {
 
 const Game = ({ typeGame = ETypeGame.FRIEND, initialTurn = 1 }: GameProps) => {
   // Guarda el estado del board
-  // setBoardState
-  const [boardState] = useState(getInitalBoardState);
+  const [boardState, setBoardState] = useState(getInitalBoardState);
   // Estado de los jugadores del juego (máximo serán dos)...
   // setPlayers
   const [players] = useState(() => getInitialPlayers(typeGame));
   // Para el turno, setTurn
-  const [turn] = useState<TotalPlayers>(initialTurn);
+  const [turn] = useState<TotalPlayers>(
+    typeGame !== ETypeGame.SOLO ? initialTurn : 1
+  );
   // Estado de los dados..
   const [diceValues, setDiceValues] = useState(() => getInitialDiceValues());
   // Estado de animación de los dados...
   const [dieState, setDieState] = useState<DiceState>(EDiceState.HIDE);
   // Guardará el estado del total de lanzamientos...
   const [throwing, setThrowing] = useState(TOTAL_THROWING);
+  // Para saber si se ha logrado un Yatzy...
+  const [isYatzy, setIsYatzy] = useState(false);
+  // Para guardar el ítem seleccionado en el board...
+  const [itemSelected, setItemSelected] = useState<ItemSelectedBoard>(
+    INITIAL_ITEM_SELECTED
+  );
 
   /**
    * Evento que se ejecuta una vez ha terminado de girar los dados...
    */
   const handleDoneDices = () => {
-    console.log("Termina");
+    const { copyBoardState, isYatzy: newIsYatzy } = calculateBoardValues(
+      boardState,
+      diceValues,
+      turn
+    );
+
+    setBoardState(copyBoardState);
+    setIsYatzy(newIsYatzy);
     setDieState(EDiceState.STOPPED);
+    setItemSelected(INITIAL_ITEM_SELECTED);
+
+    // TODO: Mostrar un mensaje cuado se ha obtenido Un Yatzy...
+    if (newIsYatzy) {
+      console.log("Has obtenido un Yatzy");
+    }
   };
 
   /**
@@ -67,6 +93,14 @@ const Game = ({ typeGame = ETypeGame.FRIEND, initialTurn = 1 }: GameProps) => {
    */
   const handleClickButtons = (type: TypeButtonGame) => {
     if (type === ETypeButtonGame.ROLL) {
+      // Dejar el board sin opciones seleccionadas...
+      // Sólo si había una seleccionada...
+      if (itemSelected.index >= 0) {
+        setBoardState((board) =>
+          deselectBoardItemBoard(board, itemSelected, turn)
+        );
+      }
+
       setDiceValues(() => rollDice(diceValues));
       setDieState(EDiceState.SPIN);
       setThrowing((value) => value - 1);
@@ -74,6 +108,26 @@ const Game = ({ typeGame = ETypeGame.FRIEND, initialTurn = 1 }: GameProps) => {
 
     if (type === ETypeButtonGame.PLAY) {
       console.log("PLAY");
+    }
+  };
+
+  /**
+   * Evento para la selección de un elemento en el board...
+   * @param item
+   * @param player
+   */
+  const handleClickBoard = (item: IBoardItem, player: TotalPlayers) => {
+    const { changeState, copyBoardState, newItemSelected } = selectItemBoard(
+      boardState,
+      itemSelected,
+      item,
+      player,
+      isYatzy
+    );
+
+    if (changeState) {
+      setBoardState(copyBoardState);
+      setItemSelected(newItemSelected);
     }
   };
 
@@ -118,7 +172,8 @@ const Game = ({ typeGame = ETypeGame.FRIEND, initialTurn = 1 }: GameProps) => {
   /**
    * Bloquear el botón que acepta la selección de un ítem
    */
-  const disabledPlay = blockContent || dieState === EDiceState.SPIN;
+  const disabledPlay =
+    blockContent || dieState === EDiceState.SPIN || itemSelected.index < 0;
 
   /**
    * Sólo muestra el botón de play si:
@@ -133,7 +188,8 @@ const Game = ({ typeGame = ETypeGame.FRIEND, initialTurn = 1 }: GameProps) => {
    * De lo contrario, cuando tiene el turno el jugador dos, de los otros tipos
    * el color cambiará a rojo...
    */
-  const diceTheme: DiceTheme = EDiceTheme.WHITE;
+  const diceTheme: DiceTheme =
+    EDiceTheme[turnsEnabledTwoPlayers ? "WHITE" : "RED"];
 
   // Para validar si se muestra los valores de la tabla...
   // Cuando es el turno del jugador dos, salvo que se este jugando con un amigo
@@ -149,9 +205,7 @@ const Game = ({ typeGame = ETypeGame.FRIEND, initialTurn = 1 }: GameProps) => {
         thrownDice={thrownDice}
         turn={turn}
         typeGame={typeGame}
-        handleClick={(item, player) => {
-          console.log(item, player);
-        }}
+        handleClick={handleClickBoard}
       />
       <Dices
         dieState={dieState}
