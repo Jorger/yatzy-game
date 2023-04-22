@@ -1,11 +1,13 @@
 import { randomNumber } from "../../utils/helpers";
 import {
+  BONUS_VALUE,
   CATEGORIES,
   EItemType,
   ETypeGame,
   INITIAL_ITEM_SELECTED,
   LABELS_GAME,
   LOWER_SECTION_LABELS,
+  MIN_SCORE_BONUS,
   UPPER_SECTION_LABELS,
   YATZY_SCORES,
 } from "../../utils/constants";
@@ -18,6 +20,7 @@ import type {
   IScore,
   IscoreBoard,
   ItemSelectedBoard,
+  ItemType,
   Player,
   TotalPlayers,
   TypeGame,
@@ -127,6 +130,53 @@ const calculateIsStraight = (diceValues: DiceValue[], straight: 4 | 5 = 4) => {
   } while (1);
 
   return isStraight;
+};
+
+/**
+ * Calcula el score para cada sección del board...
+ * @param section
+ * @param turn
+ * @returns
+ */
+const calculateScoreSections = (section: IBoardItem[], turn: TotalPlayers) =>
+  section.reduce((a, s) => a + s.score[turn - 1].value, 0);
+
+/**
+ * En este caso revisa el array de score
+ * el valor isUsed debe ser true en todos los scores (tanto para un juagdor como para dos)
+ * @param boardState
+ * @param typeGame
+ */
+const validateGameOver = (boardState: IBoard, typeGame: TypeGame) => {
+  // Si el tipo de juego es sólo, en este caso sólo se valida el primer score...
+  const scoreSize = typeGame === ETypeGame.SOLO ? 1 : 2;
+
+  const completeBoard = Object.keys(EItemType).map((type) => {
+    const section = boardState[type as ItemType];
+    // Se obtiene el total de score de cada
+    // item (UPPER_SECTION = 6, LOWER_SECTION = 7)
+    const size = section.length;
+    let total = 0;
+
+    for (let i = 0; i < size; i++) {
+      let totalSize = 0;
+
+      // El scoreSize será 1 cuando es sólo y dos para los demás
+      for (let c = 0; c < scoreSize; c++) {
+        totalSize += section[i].score[c].isUsed ? 1 : 0;
+      }
+
+      total += totalSize === scoreSize ? 1 : 0;
+    }
+
+    // Si el total global es igual al tamaño de la sección
+    // quiere decir que todos tienen un score asociado...
+    return total === size;
+  });
+
+  // Los valores de las dos secciones deben ser true
+  // de esta forma se ha seleccionado todos los valores...
+  return completeBoard.every((v) => v);
 };
 
 /**
@@ -475,4 +525,88 @@ export const deselectBoardItemBoard = (
   ].isBonusYatzy = false;
 
   return copyBoardState;
+};
+
+/**
+ * Una vez presionado el botón de Play, se calcula el score...
+ * @param boardState
+ * @param itemSelected
+ * @param players
+ * @param turn
+ * @param typeGame
+ * @param isYatzy
+ * @returns
+ */
+export const calculateScore = (
+  boardState: IBoard,
+  itemSelected: ItemSelectedBoard,
+  players: Player[],
+  turn: TotalPlayers,
+  typeGame: TypeGame,
+  isYatzy: boolean
+) => {
+  const copyBoardState: IBoard = cloneDeep(boardState);
+  const copyPlayers: Player[] = cloneDeep(players);
+  const { type, index } = itemSelected;
+  const { isBonusEarned } = copyPlayers[turn - 1];
+  const { temporal } = copyBoardState[type][index].score[turn - 1];
+
+  // Se valida si es un bono para el yanzy, sólo ocurre si:
+  // 1. Si se ha obtenido un Yanzy
+  // 2. Si la casilla que se ha seleccionado no es un YATZY
+  // 3. Y además que la casilla de YATZY esté ya ocuopada...
+  let isBonusYatzy = false;
+  if (isYatzy && copyBoardState[type][index].value !== "YATZY") {
+    const indexYanzy = copyBoardState.LOWER_SECTION.findIndex(
+      (v) => v.value === "YATZY"
+    );
+
+    isBonusYatzy =
+      copyBoardState.LOWER_SECTION[indexYanzy].score[turn - 1].isUsed;
+  }
+
+  // Se toma el valor temporal de la casilla
+  // si había un bono de tipo yatzy se lo agrega...
+  const finalValue = temporal + (isBonusYatzy ? YATZY_SCORES.YATZY : 0);
+  copyBoardState[type][index].score[turn - 1].isSelected = false;
+  copyBoardState[type][index].score[turn - 1].isUsed = true;
+  copyBoardState[type][index].score[turn - 1].isBonusYatzy = false;
+  copyBoardState[type][index].score[turn - 1].value = finalValue;
+
+  /**
+   * Se calcula todo el valor de la sección de nuevo
+   * Si ya había ontenido el bono, se añade el valor al existente
+   */
+  let scoreUpperSection =
+    calculateScoreSections(copyBoardState.UPPER_SECTION, turn) +
+    (isBonusEarned ? BONUS_VALUE : 0);
+
+  /**
+   * Se valida si el puntaje obtenido es mayor e igual que el valor mínimo para el bono
+   * Igualmente se valida que no se haya dado el bono antes...
+   */
+  if (!isBonusEarned && scoreUpperSection >= MIN_SCORE_BONUS) {
+    copyPlayers[turn - 1].isBonusEarned = true;
+    scoreUpperSection += BONUS_VALUE;
+  }
+
+  const scoreLowerSection = calculateScoreSections(
+    copyBoardState.LOWER_SECTION,
+    turn
+  );
+
+  copyPlayers[turn - 1].score = scoreUpperSection + scoreLowerSection;
+
+  copyPlayers[turn - 1].scoreBoard = {
+    UPPER_SECTION: scoreUpperSection,
+    LOWER_SECTION: scoreLowerSection,
+  };
+
+  const isGameOver = validateGameOver(copyBoardState, typeGame);
+
+  return {
+    copyBoardState,
+    copyPlayers,
+    isGameOver,
+  };
 };

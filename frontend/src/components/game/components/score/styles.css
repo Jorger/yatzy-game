@@ -1,0 +1,112 @@
+.score-game {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.score-game-wrapper {
+  align-items: center;
+  animation: fadeInLeft 300ms ease both;
+  background-color: var(--bg-bright-blue);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+/* Se establece la posición del botón por css */
+.score-game-wrapper .circular-button {
+  left: 20px;
+  position: absolute;
+  top: 20px;
+}
+
+.score-game-value {
+  align-items: center;
+  animation: bounceIn 1s both;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  padding: 10px 20px;
+  width: 100%;
+}
+
+.score-game-message {
+  color: var(--bg-white);
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  padding: 10px 20px;
+  text-align: center;
+  text-shadow: -2px 2px 3px var(--bg-blue3);
+  visibility: hidden;
+  width: 100%;
+}
+
+.score-game-buttons {
+  align-items: center;
+  background-color: var(--bg-blue4);
+  box-shadow: inset 0px -5px 0px var(--bg-blue5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 10px;
+  visibility: hidden;
+  width: 100%;
+}
+
+.score-game-wrapper.show .score-game-message,
+.score-game-wrapper.show .score-game-buttons {
+  animation: bounceInUp 0.8s both;
+  visibility: visible;
+}
+
+.score-game-buttons-play {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  padding: 15px 20px;
+  text-shadow: -2px 2px 3px var(--bg-chocolate);
+  text-transform: uppercase;
+}
+
+.score-game-buttons-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.score-game-buttons-bottom button {
+  background-color: var(--bg-light-sky-blue);
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0px 5px 0px var(--bg-light-blue3);
+  cursor: pointer;
+  height: 60px;
+  padding: 10px;
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.score-game-buttons-bottom button:not(:last-child) {
+  margin-right: 20px;
+}
+
+.score-game-buttons-bottom button .icon-wrapper {
+  margin-top: 5px;
+  width: 90%;
+}
+
+.score-game-buttons-bottom svg {
+  filter: drop-shadow(0 2px 1px var(--bg-blue6));
+}
