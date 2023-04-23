@@ -2,12 +2,14 @@ import { randomNumber } from "../../utils/helpers";
 import {
   BONUS_VALUE,
   CATEGORIES,
+  EDifficulty,
   EItemType,
   ETypeGame,
   INITIAL_ITEM_SELECTED,
   LABELS_GAME,
   LOWER_SECTION_LABELS,
   MIN_SCORE_BONUS,
+  TOTAL_THROWING,
   UPPER_SECTION_LABELS,
   YATZY_SCORES,
 } from "../../utils/constants";
@@ -15,6 +17,7 @@ import cloneDeep from "lodash.clonedeep";
 import type {
   CategoriesType,
   DiceValue,
+  Difficulty,
   IBoard,
   IBoardItem,
   IScore,
@@ -177,6 +180,75 @@ const validateGameOver = (boardState: IBoard, typeGame: TypeGame) => {
   // Los valores de las dos secciones deben ser true
   // de esta forma se ha seleccionado todos los valores...
   return completeBoard.every((v) => v);
+};
+
+/**
+ * Función que devuelve uan lista de indices para selección
+ * aleatoria de dados, de forma única...
+ * @param total
+ * @returns
+ */
+const getSelectionRandomDice = (total: number = 1) => {
+  const selectedDice: number[] = [];
+
+  // Ciclo infinito que intera por la cantida dada en total...
+  // el ciclo se rompera una vez el tamaño de selectedDice sea igual que total
+  do {
+    // Generar el valor del dado...
+    // se hace de 0 hasta 4, en este caso para los cinco dados...
+    // los valores obtenidos son los indices de cada dado...
+    const randomDice = randomNumber(0, 4);
+
+    // Se valida que no exista ya el valor del dado en el vector de selección.
+    if (!selectedDice.includes(randomDice)) {
+      // Si no existe, se adiciona
+      selectedDice.push(randomDice);
+    }
+
+    // Si el tamaño del vector es igual al total a generar
+    // Se rompe el cliclo...
+    if (selectedDice.length === total) {
+      break;
+    }
+  } while (1);
+
+  return selectedDice;
+};
+
+/**
+ * Función que retorna el mayor o menor valor de una sección
+ * Depende del nivel de dificultad solicitado
+ * Devuelve el primero en cada caso...
+ * @param section
+ * @param turn
+ * @param difficulty
+ * @returns
+ */
+const getScoreSectionBot = (
+  section: IBoardItem[],
+  turn: TotalPlayers,
+  difficulty: Difficulty
+) => {
+  const scores = section
+    .filter((value) => !value.score[turn - 1].isUsed)
+    .map((value) => ({
+      index: value.index,
+      score: value.score[turn - 1].temporal,
+    }))
+    .sort((a, b) =>
+      difficulty === EDifficulty.HARD ? b.score - a.score : a.score - b.score
+    );
+
+  /**
+   * Se separan los scores que tengan valor de los que no
+   */
+  const scoreNoZero = scores.filter((v) => v.score !== 0);
+  const scoreZero = scores.filter((v) => v.score === 0);
+
+  /**
+   * Se da prioridad al score con valores...
+   */
+  return scoreNoZero?.[0] || scoreZero?.[0];
 };
 
 /**
@@ -609,4 +681,202 @@ export const calculateScore = (
     copyPlayers,
     isGameOver,
   };
+};
+
+/**
+ * Función que establece los valores que seleccionará el bot de los dados
+ * Es aleatorio, sólo se hará cuando ya se haya realizado un lazamiento
+ * De lo contrario no se selecciona ninguno...
+ * @param diceValues
+ * @param throwing
+ * @returns
+ */
+export const diceRandomSelectionBot = (
+  diceValues: DiceValue[],
+  throwing: number
+) => {
+  const copyDiceValues = cloneDeep(diceValues);
+
+  // Determinar la cantidad de dados que se van a bloquear/seleccionar...
+  // Si es cero, no se bloquea ninguno...
+  // Se deja máximo 4, para que no bloquee todos los dados,
+  // al menos, uno quedará activo...
+  const totalSelectedDice = randomNumber(0, 4);
+
+  /**x
+   * Sólo ingresa si el número de lanzamientos es menor al permitido (3)
+   * Además que el valor aletorio haya indicado el número de dados a bloquear...
+   */
+  if (throwing < TOTAL_THROWING && totalSelectedDice > 0) {
+    const diceIndices = getSelectionRandomDice(totalSelectedDice);
+
+    //Se itera los dados y se habilitan los que estén en el vector de indices...
+    // los demás se deseleccionan...
+    for (let i = 0; i < copyDiceValues.length; i++) {
+      copyDiceValues[i].selected = diceIndices.includes(i);
+    }
+  }
+
+  return copyDiceValues;
+};
+
+/**
+ * Fnción que determina:
+ * Si habá un nuevo lanzamiento de dado o
+ * indicará cual es el ítem del board que seleccionará...
+ * @param boardState
+ * @param throwing
+ * @param difficulty
+ * @param isYatzy
+ * @param turn
+ * @returns
+ */
+export const validateNextBotRoll = (
+  boardState: IBoard,
+  throwing: number,
+  difficulty: Difficulty,
+  isYatzy: boolean,
+  turn: TotalPlayers
+) => {
+  /**
+   * Se determina la dificultad final del lanzamiento para el bot
+   * En este caso si la dificultad es medium, ésta se determina de forma aleatoria
+   */
+  const finalDifficulty: Difficulty =
+    difficulty === EDifficulty.MEDIUM
+      ? randomNumber(0, 1) === 1
+        ? EDifficulty.HARD
+        : EDifficulty.EASY
+      : difficulty;
+
+  /**
+   * Se obtien el valor potencial del score para la sección alta
+   * En este caso se devuleve sólo un valor, el cual dependiendo de la
+   * dificultad podrá ser el mayor de todos o el menor
+   */
+  const scoreUpperSection = getScoreSectionBot(
+    boardState.UPPER_SECTION,
+    turn,
+    finalDifficulty
+  );
+
+  /**
+   * Mismo proceso para la sección baja..
+   */
+  const scoreLowerSection = getScoreSectionBot(
+    boardState.LOWER_SECTION,
+    turn,
+    finalDifficulty
+  );
+
+  /**
+   * Determina si los valores resultantes del board existen,
+   * si es así determina si los valores no son cero
+   * Si alguno de los dos no es cero, se indica que no es necesario
+   * otro lanzamiento...
+   */
+  let isValueOnBoard = false;
+  if (scoreUpperSection || scoreLowerSection) {
+    if (scoreUpperSection) {
+      isValueOnBoard = scoreUpperSection?.score !== 0;
+    }
+
+    if (!isValueOnBoard && scoreLowerSection) {
+      isValueOnBoard = scoreLowerSection?.score !== 0;
+    }
+  }
+
+  /**
+   * Se vuleve a lanzar un dado si:
+   * 1. Sí aún se tienen lanzamientos disponibles.
+   * 2. Si se determina que entre los valores devueltos a un valor diferente a cero.
+   * 3. Si no hay un Yatzy.
+   */
+  const rollAgain = throwing > 0 && !isValueOnBoard && !isYatzy;
+
+  // Es el que indica el elemento que se selecciona
+  // Es let por que su valor puede que cambie...
+  let itemSelected: ItemSelectedBoard = cloneDeep(INITIAL_ITEM_SELECTED);
+
+  // Si se decide que no se hace otro lanzamiento se va a elegir la casilla
+  if (!rollAgain) {
+    // Si se ha obtenido un Yanzy, se buscará la casilla de Yanzy...
+    if (isYatzy) {
+      // Se obtiene la casilla del yanzy...
+      const indexYanzy = boardState.LOWER_SECTION.findIndex(
+        (v) => v.value === "YATZY"
+      );
+
+      // Se valida que el Yatzy no haya sido seleccionado ya...
+      if (!boardState.LOWER_SECTION[indexYanzy].score[turn - 1].isUsed) {
+        // Como no se ha seleccionado, se toma la casilla
+        // y por lo tanto se haría el lanzamiento...
+        itemSelected.index = indexYanzy;
+        itemSelected.type = EItemType.LOWER_SECTION;
+      }
+    }
+
+    // Si el valor es menor que 0 para itemSelected,
+    // quiere decir que no se ha seleccionado nada
+    // Podría estar seleccionado si antes fue un Yanzy...
+    if (itemSelected.index < 0) {
+      /**
+       * Se valida que existan score en ambas partes del board
+       */
+      if (scoreUpperSection && scoreLowerSection) {
+        /**
+         * Se obtiene el puntaje cuando la dificultad es alta
+         * En este caso se toma el mayor valor de las dos secciones...
+         */
+        const scoreDifficultyHard: ItemSelectedBoard =
+          scoreUpperSection.score > scoreLowerSection.score
+            ? {
+                index: scoreUpperSection.index,
+                type: EItemType.UPPER_SECTION,
+              }
+            : {
+                index: scoreLowerSection.index,
+                type: EItemType.LOWER_SECTION,
+              };
+
+        /**
+         * Se obtiene el score cuando la dificultad es baja
+         * En este caso se toma el valor menor...
+         */
+        const scoreDifficultyEasy: ItemSelectedBoard =
+          scoreUpperSection.score < scoreLowerSection.score
+            ? {
+                index: scoreUpperSection.index,
+                type: EItemType.UPPER_SECTION,
+              }
+            : {
+                index: scoreLowerSection.index,
+                type: EItemType.LOWER_SECTION,
+              };
+
+        // Se guardan los scores finales...
+        const scoresObtained: {
+          [key in Exclude<Difficulty, "MEDIUM">]: ItemSelectedBoard;
+        } = {
+          HARD: scoreDifficultyHard,
+          EASY: scoreDifficultyEasy,
+        };
+
+        // Dependiendo del nivel, se establece cual es el ítem seleccionado...
+        itemSelected = scoresObtained[finalDifficulty];
+      } else {
+        if (scoreUpperSection) {
+          itemSelected.index = scoreUpperSection.index;
+          itemSelected.type = EItemType.UPPER_SECTION;
+        }
+
+        if (scoreLowerSection) {
+          itemSelected.index = scoreLowerSection.index;
+          itemSelected.type = EItemType.LOWER_SECTION;
+        }
+      }
+    }
+  }
+
+  return { rollAgain, itemSelected };
 };
