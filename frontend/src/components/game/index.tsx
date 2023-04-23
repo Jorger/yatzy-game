@@ -2,6 +2,7 @@ import {
   Board,
   Buttons,
   Dices,
+  GameMessages,
   GameWrapper,
   Header,
   ScoreGame,
@@ -42,7 +43,7 @@ interface GameProps {
   initialTurn?: TotalPlayers;
 }
 
-const Game = ({ typeGame = ETypeGame.SOLO, initialTurn = 1 }: GameProps) => {
+const Game = ({ typeGame = ETypeGame.FRIEND, initialTurn = 1 }: GameProps) => {
   // Guarda el estado del board
   const [boardState, setBoardState] = useState(getInitalBoardState);
   // Estado de los jugadores del juego (máximo serán dos)...
@@ -65,6 +66,14 @@ const Game = ({ typeGame = ETypeGame.SOLO, initialTurn = 1 }: GameProps) => {
   );
   // Estado para saber si el juego ha terminado...
   const [gamerOver, setGamerOver] = useState(false);
+  // Para controlar los mensajes del juego...
+  // En este caso para mostrar si es un Yatzy
+  // o para mostrar el turno cuando hay dos jugadores de tipo friends offline
+  const [message, setMessage] = useState({
+    isYatzy: false,
+    value: typeGame === ETypeGame.FRIEND ? `Player ${turn}` : "",
+    counter: typeGame === ETypeGame.FRIEND ? 1 : 0,
+  });
 
   /**
    * Evento que se ejecuta una vez ha terminado de girar los dados...
@@ -81,9 +90,13 @@ const Game = ({ typeGame = ETypeGame.SOLO, initialTurn = 1 }: GameProps) => {
     setDieState(EDiceState.STOPPED);
     setItemSelected(INITIAL_ITEM_SELECTED);
 
-    // TODO: Mostrar un mensaje cuado se ha obtenido Un Yatzy...
+    // Si es Yatzy, se establece que muestre el mensaje...
     if (newIsYatzy) {
-      console.log("Has obtenido un Yatzy");
+      setMessage((prev) => ({
+        isYatzy: true,
+        value: "Yatzy",
+        counter: prev.counter + 1,
+      }));
     }
   };
 
@@ -139,12 +152,16 @@ const Game = ({ typeGame = ETypeGame.SOLO, initialTurn = 1 }: GameProps) => {
         const newTurn: TotalPlayers = turn === 1 ? 2 : 1;
         setTurn(newTurn);
 
+        // Al cambiar de turno y es el juego es contra un amigo
+        // en el mismo dispositivo, se muestra el mensaje...
         if (typeGame === ETypeGame.FRIEND) {
-          console.log("El siguiente turno", `Player ${newTurn}`);
+          setMessage((prev) => ({
+            isYatzy: false,
+            value: `Player ${newTurn}`,
+            counter: prev.counter + 1,
+          }));
         }
       }
-
-      // console.log("PLAY");
     }
   };
 
@@ -240,6 +257,7 @@ const Game = ({ typeGame = ETypeGame.SOLO, initialTurn = 1 }: GameProps) => {
   return (
     <GameWrapper blockContent={blockContent}>
       {gamerOver && <ScoreGame players={players} />}
+      <GameMessages {...message} />
       <Header countdown={countdown} players={players} turn={turn} />
       <Board
         items={boardState}

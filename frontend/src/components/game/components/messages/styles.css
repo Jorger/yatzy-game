@@ -1,0 +1,74 @@
+.game-messages {
+  font-family: "Arial Black", Gadget, sans-serif;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  top: 40%;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.game-messages.show {
+  opacity: 1;
+  animation: zoomInDown 1000ms ease both;
+}
+
+.game-messages.hide {
+  animation: zoomOut 500ms ease both;
+}
+
+.game-messages-wrapper {
+  text-transform: uppercase;
+  font-size: 60px;
+  color: var(--bg-dark-gold2);
+  font-weight: bold;
+  background: var(--bg-deep-blue);
+  background: linear-gradient(to top, var(--bg-crimson) 34%, var(--bg-red) 57%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: var(--bg-white);
+}
+
+.game-messages-wrapper-yatzy {
+  color: var(--bg-light-red);
+  font-size: 70px;
+  text-transform: uppercase;
+  letter-spacing: 10px;
+  text-shadow: 0px 0px 0 rgb(234, 82, 77), 1px 1px 0 rgb(225, 73, 68),
+    2px 2px 0 rgb(216, 64, 59), 3px 3px 0 rgb(207, 55, 50),
+    4px 4px 0 rgb(198, 46, 41), 5px 5px 4px rgba(103, 2, 0, 0.43),
+    5px 5px 1px rgba(103, 2, 0, 0.5), 0px 0px 4px rgba(103, 2, 0, 0.2);
+}
+
+@keyframes zoomInDown {
+  from {
+    opacity: 0;
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -1000px, 0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  to {
+    opacity: 0;
+  }
+}
