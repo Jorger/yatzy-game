@@ -44,13 +44,13 @@ import type {
 } from "../../interfaces";
 
 interface GameProps {
-  typeGame?: TypeGame;
-  initialTurn?: TotalPlayers;
+  typeGame: TypeGame;
+  initialTurn: TotalPlayers;
   difficulty?: Difficulty;
 }
 
 const Game = ({
-  difficulty = EDifficulty.HARD,
+  difficulty = EDifficulty.EASY,
   typeGame = ETypeGame.BOT,
   initialTurn = 2,
 }: GameProps) => {
@@ -134,7 +134,10 @@ const Game = ({
           );
         }
 
-        setDiceValues(() => rollDice(diceValues));
+        setDiceValues((values) => {
+          const newDiceValues = rollDice(values);
+          return newDiceValues;
+        });
         setDieState(EDiceState.SPIN);
         setThrowing((value) => value - 1);
       }
@@ -175,7 +178,7 @@ const Game = ({
         }
       }
     },
-    [boardState, diceValues, isYatzy, itemSelected, players, turn, typeGame]
+    [boardState, isYatzy, itemSelected, players, turn, typeGame]
   );
 
   /**

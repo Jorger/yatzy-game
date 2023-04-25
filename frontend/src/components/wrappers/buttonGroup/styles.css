@@ -1,0 +1,28 @@
+.button-group {
+  animation: bounceIn 0.9s both;
+  align-items: center;
+  background-color: var(--bg-lighter-blue);
+  border-radius: 15px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+  width: 100%;
+}
+
+.button-group-header {
+  background-color: var(--bg-blue7);
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px inset;
+  color: var(--bg-white);
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
