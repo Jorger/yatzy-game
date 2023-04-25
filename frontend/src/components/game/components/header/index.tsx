@@ -1,5 +1,6 @@
 import { handleBack } from "./helpers";
 import { HeaderWrapper, PlayersHeader } from "./components";
+import { useNavigate } from "react-router-dom";
 import CircularButton from "../../../circularButton";
 import React from "react";
 import type {
@@ -15,14 +16,13 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
+  const navigate = useNavigate();
+
   return (
     <HeaderWrapper>
       <CircularButton
         type="back"
-        onClick={() => {
-          // TODO: implementar router...
-          handleBack((action) => console.log(action));
-        }}
+        onClick={() => handleBack((action) => action && navigate("/"))}
       />
       <PlayersHeader {...props} />
       <CircularButton type="sound-on" onClick={() => console.log("sound-on")} />

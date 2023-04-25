@@ -11,7 +11,7 @@ import { EItemType } from "../../../../../../utils/constants";
 interface ItemProps {
   label?: string;
   size?: number;
-  type: ItemType;
+  type?: ItemType;
   value: valueDice | CategoriesType;
 }
 

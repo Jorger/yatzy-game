@@ -1,0 +1,30 @@
+.lobby-game-options {
+  animation: bounceIn 1s both;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  width: 80%;
+}
+
+.lobby-game-options-button {
+  background-color: var(--bg-strong-blue2);
+  border-radius: 50%;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.lobby-game-options-button:not(:last-child) {
+  margin-right: 20px;
+}
+
+.lobby-game-options-button .icon-wrapper {
+  width: 35px;
+  height: 35px;
+}
+
+.lobby-game-options-button svg {
+  filter: drop-shadow(0 2px 1px var(--bg-blue6));
+}
