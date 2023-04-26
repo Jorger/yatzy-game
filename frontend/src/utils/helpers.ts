@@ -28,3 +28,11 @@ export const randomNumber = (min: number, max: number) =>
  */
 export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Copiar un texto en el portapapeles...
+ * @param {*} text
+ */
+export const copyToClipboard = (text: string = "") => {
+  navigator.clipboard.writeText(text);
+};
