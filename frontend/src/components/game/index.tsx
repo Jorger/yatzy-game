@@ -7,7 +7,6 @@ import {
   Header,
   ScoreGame,
 } from "./components";
-import { delay } from "../../utils/helpers";
 import {
   calculateBoardValues,
   calculateScore,
@@ -22,6 +21,7 @@ import {
   totalDiceAvailable,
   validateNextBotRoll,
 } from "./helpers";
+import { delay } from "../../utils/helpers";
 import {
   EDiceState,
   EDiceTheme,
@@ -31,6 +31,7 @@ import {
   INITIAL_ITEM_SELECTED,
   TOTAL_THROWING,
 } from "../../utils/constants";
+import { playSounds } from "../../utils/sounds";
 import React, { useCallback, useEffect, useState } from "react";
 import type {
   DiceState,
@@ -107,6 +108,8 @@ const Game = ({
         value: "Yatzy",
         counter: prev.counter + 1,
       }));
+
+      playSounds("yatzy");
     }
   };
 
@@ -115,6 +118,7 @@ const Game = ({
    * @param index
    */
   const handleSelectDice = (index: number) => {
+    playSounds("click");
     setDiceValues(selectDice(diceValues, index));
   };
 
@@ -162,6 +166,14 @@ const Game = ({
         setItemSelected(INITIAL_ITEM_SELECTED);
         setGamerOver(isGameOver);
 
+        // Sonido cuando el usuario hace click en el botón Play
+        playSounds("click");
+
+        // Sonido cuando el juego ha acabado...
+        if (isGameOver) {
+          playSounds("yatzy");
+        }
+
         if (!isGameOver && typeGame !== ETypeGame.SOLO) {
           const newTurn: TotalPlayers = turn === 1 ? 2 : 1;
           setTurn(newTurn);
@@ -196,6 +208,7 @@ const Game = ({
     );
 
     if (changeState) {
+      playSounds("click");
       setBoardState(copyBoardState);
       setItemSelected(newItemSelected);
     }
@@ -239,6 +252,10 @@ const Game = ({
       } else {
         setItemSelected(newItemSelected);
       }
+    }
+
+    if (!gamerOver && dieState === EDiceState.SPIN) {
+      playSounds("dice");
     }
   }, [
     boardState,

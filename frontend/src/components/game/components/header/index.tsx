@@ -1,6 +1,7 @@
 import { handleBack } from "./helpers";
 import { HeaderWrapper, PlayersHeader } from "./components";
 import { useNavigate } from "react-router-dom";
+import { useSounds } from "../../../../hooks";
 import CircularButton from "../../../circularButton";
 import React from "react";
 import type {
@@ -16,6 +17,7 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
+  const { withSound, toggleSound } = useSounds();
   const navigate = useNavigate();
 
   return (
@@ -25,7 +27,10 @@ const Header = (props: HeaderProps) => {
         onClick={() => handleBack((action) => action && navigate("/"))}
       />
       <PlayersHeader {...props} />
-      <CircularButton type="sound-on" onClick={() => console.log("sound-on")} />
+      <CircularButton
+        type={withSound ? "sound-on" : "sound-off"}
+        onClick={toggleSound}
+      />
     </HeaderWrapper>
   );
 };
