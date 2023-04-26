@@ -1,10 +1,12 @@
 import "./styles.css";
 import { LABELS_GAME } from "../../../../utils/constants";
 import { ScoreValue } from "./components";
+import { useNavigate } from "react-router-dom";
 import CircularButton from "../../../circularButton";
 import FocusTrap from "focus-trap-react";
 import Icon from "../../../icon";
 import React, { useEffect, useState } from "react";
+import Share from "../../../share";
 import type { Player } from "../../../../interfaces";
 
 interface ScoreGameProps {
@@ -12,6 +14,7 @@ interface ScoreGameProps {
 }
 
 const ScoreGame = ({ players }: ScoreGameProps) => {
+  const navigate = useNavigate();
   const [scoreCounter, setScoreCounter] = useState(0);
   const [showElements, setShowElements] = useState(false);
 
@@ -36,6 +39,15 @@ const ScoreGame = ({ players }: ScoreGameProps) => {
       : LABELS_GAME.LOSE;
 
   /**
+   * Para el mensaje que se comparte en la opción share...
+   */
+  const dataShare = {
+    title: "Yatzy ReactJS",
+    text: `I got a score of ${players[0].score} points in Yatzy ReactJS.`,
+    url: window.location.origin,
+  };
+
+  /**
    * Se agrega FocusTrap para evitar que se navegue con el teclado
    * cuando se muestra el modal del score
    */
@@ -44,7 +56,7 @@ const ScoreGame = ({ players }: ScoreGameProps) => {
       <div className="score-game">
         <div className={`score-game-wrapper ${showElements ? "show" : ""}`}>
           {/* Se deja visible por defecto un botón, para que tenga el focus */}
-          <CircularButton onClick={() => console.log("Back")} />
+          <CircularButton onClick={() => navigate("/")} />
           <div className="score-game-value">
             {players.map(({ id, score, name }, key) => (
               <ScoreValue
@@ -60,20 +72,19 @@ const ScoreGame = ({ players }: ScoreGameProps) => {
           <div className="score-game-buttons">
             <button
               className="button orange score-game-buttons-play"
-              onClick={() => console.log("Play Again")}
+              onClick={() => navigate("/")}
             >
               Play Again
             </button>
             <div className="score-game-buttons-bottom">
-              <button
-                title="Return to lobby"
-                onClick={() => console.log("Return to lobby")}
-              >
+              <button title="Return to lobby" onClick={() => navigate("/")}>
                 <Icon type="full-house" fill="white" />
               </button>
-              <button title="Share">
-                <Icon type="share" fill="white" />
-              </button>
+              <Share data={dataShare}>
+                <button title="Share">
+                  <Icon type="share" fill="white" />
+                </button>
+              </Share>
             </div>
           </div>
         </div>

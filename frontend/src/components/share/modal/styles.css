@@ -1,0 +1,32 @@
+#overlay-share {
+  animation: fadeIn 500ms ease both;
+  background-color: var(--bg-dark-gray);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.modal-share-wrapper {
+  animation: fadeIn 1000ms ease both;
+  background-color: var(--bg-white);
+  bottom: 0;
+  padding: 20px;
+  position: absolute;
+  width: 100%;
+  border-radius: 15px 15px 0 0;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
