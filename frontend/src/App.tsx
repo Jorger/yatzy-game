@@ -1,3 +1,4 @@
+import "./utils/sounds";
 import { AppWrapper } from "./components/wrappers";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loading from "./components/loading";
