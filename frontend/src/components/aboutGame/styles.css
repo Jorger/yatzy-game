@@ -1,0 +1,45 @@
+.about-game {
+  width: 85%;
+}
+
+.about-game .logo {
+  margin-bottom: 30px;
+}
+
+.about-game p {
+  color: var(--bg-white);
+  font-size: 16px;
+  margin: 10px 0;
+  text-align: justify;
+}
+
+.about-game a,
+.about-game a:visited {
+  color: var(--bg-white);
+  font-weight: bold;
+}
+
+.about-game-social {
+  align-items: center;
+  animation: bounceIn 1s both;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.about-game-social-link {
+  background-color: var(--bg-strong-blue2);
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+  padding: 10px;
+}
+
+.about-game-social-link .icon-wrapper {
+  height: 35px;
+  width: 35px;
+}
+
+.about-game-social-link svg {
+  filter: drop-shadow(0 2px 1px var(--bg-blue6));
+}
