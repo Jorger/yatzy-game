@@ -11,9 +11,13 @@ import express, {
 } from "express";
 import helmet from "helmet";
 import http from "http";
+import passport from "passport";
+import passportController from "./controllers/passport";
 import path from "path";
 import redisStore from "./db/redis";
 import session from "express-session";
+
+passportController();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -53,6 +57,20 @@ app.use(
 );
 
 /**
+ Se relaciona passport con express...
+ */
+app.use(passport.initialize());
+app.use(passport.session());
+
+/**
+ * Se agrega el usaurio al request...
+ */
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+});
+
+/**
  * Para agregar el router para el api
  */
 app.use(apiRoute);
@@ -63,10 +81,6 @@ app.use(apiRoute);
 app.use((error: Error, _: Request, res: Response, _2: NextFunction) => {
   res.status(500).json({ message: error.message });
 });
-
-// app.get<RequestHandler>("/api/test", (_, res) => {
-//   res.json({ test: true, moreInfo: "Hola Mundo" });
-// });
 
 // Maneja los demás requests que no se ajusten a los rutas definidas
 app.get<RequestHandler>("*", (_, res) => {
