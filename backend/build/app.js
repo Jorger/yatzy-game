@@ -11,9 +11,12 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const express_1 = __importDefault(require("express"));
 const helmet_1 = __importDefault(require("helmet"));
 const http_1 = __importDefault(require("http"));
+const passport_1 = __importDefault(require("passport"));
+const passport_2 = __importDefault(require("./controllers/passport"));
 const path_1 = __importDefault(require("path"));
 const redis_1 = __importDefault(require("./db/redis"));
 const express_session_1 = __importDefault(require("express-session"));
+(0, passport_2.default)();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 const server = http_1.default.createServer(app);
@@ -35,6 +38,12 @@ app.use((0, express_session_1.default)({
         maxAge: new Date(Date.now() + 5184000000).getTime(),
     },
 }));
+app.use(passport_1.default.initialize());
+app.use(passport_1.default.session());
+app.use((req, res, next) => {
+    res.locals.user = req.user || null;
+    next();
+});
 app.use(routes_1.default);
 app.use((error, _, res, _2) => {
     res.status(500).json({ message: error.message });
