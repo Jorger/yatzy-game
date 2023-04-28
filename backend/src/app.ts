@@ -1,5 +1,6 @@
 import apiRoute from "./routes";
 import compression from "compression";
+import connectDB from "./db/mongo";
 import express, {
   NextFunction,
   Request,
@@ -46,6 +47,14 @@ app.get<RequestHandler>("*", (_, res) => {
   res.sendFile(path.join(__dirname + "/public/index.html"));
 });
 
-server.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+connectDB((error) => {
+  if (!error) {
+    console.log("MongoDB connected successfully!");
+
+    return server.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+    });
+  }
+
+  console.error("MongoDB connection error:", error);
 });
