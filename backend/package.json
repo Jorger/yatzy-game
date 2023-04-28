@@ -1,0 +1,44 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:dev": "tsc -w",
+    "start:dev": "node --watch build/app.js",
+    "build:ui": "tsc && cd ../frontend && npm run build:public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/compression": "^1.7.2",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/express": "^4.17.17",
+    "@types/express-session": "^1.17.7",
+    "@types/lodash.get": "^4.4.7",
+    "@types/node": "^18.15.5",
+    "@types/passport": "^0.4.1",
+    "@types/passport-github2": "^1.2.5",
+    "@types/passport-google-oauth2": "^0.1.5",
+    "@types/passport-microsoft": "^1.0.0",
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "connect-redis": "^7.0.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "helmet": "^6.0.1",
+    "lodash.get": "^4.4.2",
+    "mongoose": "^7.0.3",
+    "passport": "^0.4.1",
+    "passport-github2": "^0.1.12",
+    "passport-google-oauth2": "^0.2.0",
+    "passport-microsoft": "^1.0.0",
+    "redis": "^4.6.5",
+    "socket.io": "^4.6.1"
+  }
+}
