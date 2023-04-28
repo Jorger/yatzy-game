@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f4a66dc0.css",
+    "main.js": "/static/js/main.b681fdd8.js",
+    "static/css/219.22b8c5bb.chunk.css": "/static/css/219.22b8c5bb.chunk.css",
+    "static/js/219.eb5dd042.chunk.js": "/static/js/219.eb5dd042.chunk.js",
+    "static/css/795.8ca92255.chunk.css": "/static/css/795.8ca92255.chunk.css",
+    "static/js/795.7d83fb8a.chunk.js": "/static/js/795.7d83fb8a.chunk.js",
+    "static/css/665.fabebf3a.chunk.css": "/static/css/665.fabebf3a.chunk.css",
+    "static/js/665.24764abe.chunk.js": "/static/js/665.24764abe.chunk.js",
+    "static/js/962.f1a71781.chunk.js": "/static/js/962.f1a71781.chunk.js",
+    "static/js/498.c18a8cec.chunk.js": "/static/js/498.c18a8cec.chunk.js",
+    "static/js/870.2d872b1e.chunk.js": "/static/js/870.2d872b1e.chunk.js",
+    "static/css/698.b064ad54.chunk.css": "/static/css/698.b064ad54.chunk.css",
+    "static/js/698.d841e96a.chunk.js": "/static/js/698.d841e96a.chunk.js",
+    "static/media/background_sound.mp3": "/static/media/background_sound.0c489010027dbfc3d65e.mp3",
+    "static/media/sounds.mp3": "/static/media/sounds.65267deed3207aacc91c.mp3",
+    "service-worker.js": "/service-worker.js",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.f4a66dc0.css",
+    "static/js/main.b681fdd8.js"
+  ]
+}

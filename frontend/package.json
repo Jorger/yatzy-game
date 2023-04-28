@@ -37,6 +37,7 @@
   "scripts": {
     "start": "PORT=3070 react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "build:public": "GENERATE_SOURCEMAP=false BUILD_PATH='../backend/build/public' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
