@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const routes_1 = __importDefault(require("./routes"));
 const compression_1 = __importDefault(require("compression"));
+const mongo_1 = __importDefault(require("./db/mongo"));
 const express_1 = __importDefault(require("express"));
 const helmet_1 = __importDefault(require("helmet"));
 const http_1 = __importDefault(require("http"));
@@ -24,6 +25,12 @@ app.use((error, _, res, _2) => {
 app.get("*", (_, res) => {
     res.sendFile(path_1.default.join(__dirname + "/public/index.html"));
 });
-server.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
+(0, mongo_1.default)((error) => {
+    if (!error) {
+        console.log("MongoDB connected successfully!");
+        return server.listen(PORT, () => {
+            console.log(`Server started on port ${PORT}`);
+        });
+    }
+    console.error("MongoDB connection error:", error);
 });

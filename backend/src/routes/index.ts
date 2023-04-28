@@ -1,4 +1,5 @@
 import { RequestHandler, Router } from "express";
+import User from "../models/user";
 
 const router = Router();
 
@@ -21,9 +22,19 @@ router.get<RequestHandler>("/api/successlogin", (req, res) => {
 /**
  * Router que trae la información del usuario que este auénticado...
  */
-router.get<RequestHandler>("/api/me", (_, res) => {
+router.get<RequestHandler>("/api/me", async (_, res) => {
+  const user = new User({
+    name: "Jorge",
+    email: "test",
+    token: "1234",
+    socialType: 1,
+    socialName: "google",
+  });
+
+  await user.save();
+
   // authOptions
-  res.json({ isAuth: false });
+  res.json({ isAuth: false, user });
 });
 
 /**
