@@ -1,6 +1,8 @@
 import apiRoute from "./routes";
 import compression from "compression";
+import CONFIG from "./config";
 import connectDB from "./db/mongo";
+import cookieParser from "cookie-parser";
 import express, {
   NextFunction,
   Request,
@@ -10,7 +12,8 @@ import express, {
 import helmet from "helmet";
 import http from "http";
 import path from "path";
-// import session from "express-session";
+import redisStore from "./db/redis";
+import session from "express-session";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +28,29 @@ app.use(helmet.hidePoweredBy());
 // Para compresión de archivo gzip...
 app.use(compression());
 app.use(express.json());
+
+// Variable que establece si se está ejecuntado en el ambiente de production
+// Al estar en true habilitará las propiedades de secure y httpOnly, indicando
+// que sólo se transfiera cookies por una navegación segura (https)
+const isProduction = process.env.NODE_ENV === "production";
+
+/**
+ * Para la creación de la sesión...
+ */
+app.use(cookieParser());
+app.use(
+  session({
+    secret: CONFIG.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: redisStore,
+    cookie: {
+      secure: isProduction,
+      httpOnly: isProduction,
+      maxAge: new Date(Date.now() + 5184000000).getTime(),
+    },
+  })
+);
 
 /**
  * Para agregar el router para el api
