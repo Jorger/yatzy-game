@@ -10,7 +10,7 @@ const dataShare = {
   url: window.location.origin,
 };
 
-const Options = () => (
+const Options = ({ isAuth = false }: { isAuth: boolean }) => (
   <div className="lobby-game-options">
     <Share data={dataShare}>
       <button className="lobby-game-options-button" title="Share">
@@ -20,6 +20,15 @@ const Options = () => (
     <Link to="/about" className="lobby-game-options-button" title="About">
       <Icon type="info" />
     </Link>
+    {isAuth && (
+      <a
+        href="/api/logout"
+        className="lobby-game-options-button"
+        title="Log out"
+      >
+        <Icon type="logout" />
+      </a>
+    )}
   </div>
 );
 

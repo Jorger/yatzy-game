@@ -4,8 +4,9 @@ import { randomNumber } from "../utils/helpers";
 import { useParams } from "react-router-dom";
 import GameDifficulty from "../components/gameDifficulty";
 import Loading from "../components/loading";
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useContext, useState } from "react";
 import type { TypeGame } from "../interfaces";
+import UserContext from "../provider/userContext";
 
 const Game = lazy(() => import("../components/game"));
 
@@ -13,6 +14,7 @@ const GamePage = () => {
   const [difficulty, setDifficulty] = useState<Difficulty | undefined>(
     undefined
   );
+  const state = useContext(UserContext);
   // Se extrae el tipo de juego de la URL...
   const { type } = useParams();
   // Se convierte a mayúsculas para que coincida con el tipo...
@@ -30,6 +32,8 @@ const GamePage = () => {
   const initialTurn =
     typeGame !== ETypeGame.SOLO ? (randomNumber(1, 2) as TotalPlayers) : 1;
 
+  const authUser = state?.isAuth ? state.user || {} : {};
+
   // Si es de tipo bot, se renderiza un componente,
   // que permite al usuario elegir el nivel de dificultad...
   if (!difficulty && typeGame === ETypeGame.BOT) {
@@ -41,6 +45,7 @@ const GamePage = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Game
+        authUser={authUser}
         difficulty={difficulty}
         initialTurn={initialTurn}
         typeGame={typeGame}
