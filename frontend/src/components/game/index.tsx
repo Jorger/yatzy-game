@@ -39,18 +39,21 @@ import type {
   Difficulty,
   IBoardItem,
   ItemSelectedBoard,
+  Player,
   TotalPlayers,
   TypeButtonGame,
   TypeGame,
 } from "../../interfaces";
 
 interface GameProps {
+  authUser: Partial<Player>;
   typeGame: TypeGame;
   initialTurn: TotalPlayers;
   difficulty?: Difficulty;
 }
 
 const Game = ({
+  authUser = {},
   difficulty = EDifficulty.EASY,
   typeGame = ETypeGame.BOT,
   initialTurn = 2,
@@ -58,7 +61,9 @@ const Game = ({
   // Guarda el estado del board
   const [boardState, setBoardState] = useState(getInitalBoardState);
   // Estado de los jugadores del juego (máximo serán dos)...
-  const [players, setPlayers] = useState(() => getInitialPlayers(typeGame));
+  const [players, setPlayers] = useState(() =>
+    getInitialPlayers(typeGame, authUser)
+  );
   // Para el turno...
   const [turn, setTurn] = useState<TotalPlayers>(
     typeGame !== ETypeGame.SOLO ? initialTurn : 1

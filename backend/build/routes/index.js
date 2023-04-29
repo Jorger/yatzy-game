@@ -4,9 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const strategies_1 = __importDefault(require("../controllers/passport/strategies"));
+const config_1 = __importDefault(require("../config"));
 const passport_1 = __importDefault(require("passport"));
+const strategies_1 = __importDefault(require("../controllers/passport/strategies"));
 const router = (0, express_1.Router)();
+const isLoggedIn = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return res.redirect("/");
+    }
+    next();
+};
 const urlRedirect = {
     successRedirect: "/api/successlogin",
     failureRedirect: "/api/successlogin",
@@ -20,14 +27,22 @@ router.get("/api/successlogin", (req, res) => {
     }
 });
 router.get("/api/me", (req, res) => {
+    const authOptions = Object.keys(strategies_1.default)
+        .filter((v) => strategies_1.default[v].isEnabled)
+        .map((v) => {
+        const { socialName, routerURL } = strategies_1.default[v];
+        return { socialName, routerURL };
+    });
     if (req.isAuthenticated()) {
         const { name, _id, photo } = req.user || {};
         return res.json({
             isAuth: true,
+            authOptions,
+            roomRange: config_1.default.ROOM_SIZE_RANGE,
             user: { name, id: _id, photo },
         });
     }
-    res.json({ isAuth: false });
+    res.json({ isAuth: false, authOptions, roomRange: config_1.default.ROOM_SIZE_RANGE });
 });
 router.get("/api/logout", (req, res) => {
     if (req.isAuthenticated()) {
@@ -38,7 +53,7 @@ router.get("/api/logout", (req, res) => {
 Object.keys(strategies_1.default).forEach((strategy) => {
     const { callbackURL, routerURL, socialName, scope, isEnabled } = strategies_1.default[strategy];
     if (isEnabled) {
-        router.get(routerURL, passport_1.default.authenticate(socialName, scope));
+        router.get(routerURL, isLoggedIn, passport_1.default.authenticate(socialName, scope));
         router.get(callbackURL, passport_1.default.authenticate(socialName, urlRedirect));
     }
 });
