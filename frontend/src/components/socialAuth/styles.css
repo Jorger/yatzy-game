@@ -1,0 +1,11 @@
+.social-auth {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+}
+
+.social-auth .logo {
+  margin-bottom: 40px;
+}

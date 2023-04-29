@@ -1,5 +1,5 @@
 import get from "lodash.get";
-import passport, { use } from "passport";
+import passport from "passport";
 import PASSPORT_STRATEGIES, { Strategies } from "./strategies";
 import User from "../../models/user";
 
