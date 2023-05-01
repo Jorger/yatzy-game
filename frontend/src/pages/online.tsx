@@ -1,3 +1,4 @@
+import GameOnline from "../components/gameOnline";
 import React, { useContext } from "react";
 import SocialAuth from "../components/socialAuth";
 import type { IAuthOptions } from "../interfaces";
@@ -14,7 +15,7 @@ const Online = () => {
     return <SocialAuth authOptions={state?.authOptions as IAuthOptions[]} />;
   }
 
-  return <div>Online</div>;
+  return <GameOnline state={state} />;
 };
 
 export default React.memo(Online);
