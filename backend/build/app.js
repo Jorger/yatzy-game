@@ -16,6 +16,7 @@ const passport_2 = __importDefault(require("./controllers/passport"));
 const path_1 = __importDefault(require("path"));
 const redis_1 = __importDefault(require("./db/redis"));
 const express_session_1 = __importDefault(require("express-session"));
+const sockets_1 = __importDefault(require("./models/sockets"));
 (0, passport_2.default)();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
@@ -54,6 +55,7 @@ app.get("*", (_, res) => {
 (0, mongo_1.default)((error) => {
     if (!error) {
         console.log("MongoDB connected successfully!");
+        (0, sockets_1.default)(server);
         return server.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
         });

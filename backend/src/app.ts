@@ -16,6 +16,7 @@ import passportController from "./controllers/passport";
 import path from "path";
 import redisStore from "./db/redis";
 import session from "express-session";
+import startSocketServer from "./models/sockets";
 
 passportController();
 
@@ -87,10 +88,19 @@ app.get<RequestHandler>("*", (_, res) => {
   res.sendFile(path.join(__dirname + "/public/index.html"));
 });
 
+/**
+ * Conecta a la base de datos
+ * Si es exitoso, sube el server...
+ */
 connectDB((error) => {
+  // La conexión a mongo fue exitosa...
   if (!error) {
     console.log("MongoDB connected successfully!");
 
+    // Se configura los sockets...
+    startSocketServer(server);
+
+    // Se sube el server...
     return server.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`);
     });

@@ -18,6 +18,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
+    "socket.io-client": "^4.6.1",
     "sweetalert": "^2.1.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
@@ -35,7 +36,7 @@
     "workbox-streams": "^6.5.4"
   },
   "scripts": {
-    "start": "PORT=3070 react-scripts start",
+    "start": "PORT=3070 REACT_APP_API_PORT=3000 react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "build:public": "GENERATE_SOURCEMAP=false BUILD_PATH='../backend/build/public' react-scripts build",
     "test": "react-scripts test",
