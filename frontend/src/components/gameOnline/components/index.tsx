@@ -1,3 +1,5 @@
+import ConnectedOpponent from "./connectedOpponent";
 import OnlineOptions from "./onlineOptions";
+import WaitOpponent from "./waitOpponent";
 
-export { OnlineOptions };
+export { ConnectedOpponent, OnlineOptions, WaitOpponent };

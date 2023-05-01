@@ -1,0 +1,25 @@
+.wait-opponent {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+}
+
+.wait-opponent .logo {
+  margin-bottom: 40px;
+}
+
+.wait-opponent h2 {
+  color: var(--bg-white);
+  margin-top: 15px;
+  text-align: center;
+  text-shadow: 0px 3px 1px var(--bg-navy);
+  text-transform: uppercase;
+}
+
+.wait-opponent .avatar-image {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}

@@ -36,3 +36,9 @@ export const delay = (ms: number) =>
 export const copyToClipboard = (text: string = "") => {
   navigator.clipboard.writeText(text);
 };
+
+/**
+ * Si se encuentra en el ambiente de desarrollo...
+ * @returns
+ */
+export const isDev = () => process.env.NODE_ENV === "development";

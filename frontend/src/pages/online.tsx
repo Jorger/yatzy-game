@@ -15,6 +15,9 @@ const Online = () => {
     return <SocialAuth authOptions={state?.authOptions as IAuthOptions[]} />;
   }
 
+  /**
+   * Muestra el componente para jubabilidad online...
+   */
   return <GameOnline state={state} />;
 };
 

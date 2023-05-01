@@ -1,4 +1,4 @@
-import { OnlineOptions } from "./components";
+import { ConnectedOpponent, OnlineOptions } from "./components";
 import React, { useState } from "react";
 import type { IAuth, TypeRoom } from "../../interfaces";
 
@@ -18,7 +18,9 @@ const GameOnline = ({ state }: GameOnlineProps) => {
     );
   }
 
-  return <div>GameOnline</div>;
+  const extPros = { state, typeRoom };
+
+  return <ConnectedOpponent {...extPros} />;
 };
 
 export default React.memo(GameOnline);
