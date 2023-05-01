@@ -1,0 +1,26 @@
+.online-options .logo {
+  margin-bottom: 50px;
+}
+
+.online-options .avatar-image {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.online-options-buttons {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+}
+
+.online-options-buttons .button {
+  font-size: 20px;
+  font-weight: bold;
+  height: 50px;
+  text-transform: uppercase;
+}
+
+.online-options-buttons .button:not(:last-child) {
+  margin-bottom: 15px;
+}
