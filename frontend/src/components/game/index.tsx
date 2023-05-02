@@ -44,25 +44,35 @@ import type {
   TypeButtonGame,
   TypeGame,
 } from "../../interfaces";
+import { Socket } from "socket.io-client";
+import { useShowMessageRedirect } from "../../hooks";
 
 interface GameProps {
   authUser: Partial<Player>;
-  typeGame: TypeGame;
-  initialTurn: TotalPlayers;
   difficulty?: Difficulty;
+  initialTurn: TotalPlayers;
+  opponent?: Partial<Player>;
+  room?: string;
+  socket?: Socket;
+  typeGame: TypeGame;
 }
 
 const Game = ({
   authUser = {},
   difficulty = EDifficulty.EASY,
-  typeGame = ETypeGame.BOT,
   initialTurn = 2,
+  opponent = {},
+  room = "",
+  socket,
+  typeGame = ETypeGame.BOT,
 }: GameProps) => {
+  // Custom hook que muestra un mensaje y además redirecciona el usuario a un path especificado..
+  const setRedirect = useShowMessageRedirect();
   // Guarda el estado del board
   const [boardState, setBoardState] = useState(getInitalBoardState);
   // Estado de los jugadores del juego (máximo serán dos)...
   const [players, setPlayers] = useState(() =>
-    getInitialPlayers(typeGame, authUser)
+    getInitialPlayers(typeGame, authUser, opponent)
   );
   // Para el turno...
   const [turn, setTurn] = useState<TotalPlayers>(
@@ -291,19 +301,49 @@ const Game = ({
   }, [handleClickButtons, itemSelected, turn, typeGame]);
 
   /**
+   * Eefecto que ejecuta las acciones online del juego...
+   */
+  useEffect(() => {
+    if (socket) {
+      /**
+       * El oponente se ha desconectado...
+       */
+      socket.on("OPPONENT_LEAVE", () => {
+        setRedirect({
+          message: {
+            title: "Opponent offline 😭",
+            icon: "error",
+            timer: 5000,
+          },
+        });
+      });
+    }
+  }, [setRedirect, socket]);
+
+  /**
    * Función que retorna cuando el contador de tiempo ha finalizado
    * Sólo se ejecutará el tipo Online...
    * @param player
    */
   const onEndCountdown = (player: TotalPlayers) => {
-    console.log({ player });
+    if (player === 1) {
+      setRedirect({
+        message: {
+          title: "You've run out of time",
+          icon: "info",
+          timer: 5000,
+        },
+      });
+    }
   };
 
   /**
    * Sólo se agrega el cronometro cuando es online...
    */
   const countdown =
-    typeGame === ETypeGame.ONLINE ? { stop: false, onEndCountdown } : undefined;
+    typeGame === ETypeGame.ONLINE
+      ? { stop: dieState === EDiceState.SPIN && !gamerOver, onEndCountdown }
+      : undefined;
 
   // Para saber si es el caso donde la interfaz de ambos lados
   // se habilita para cuando hay dos jugadores, en este caso, sólo

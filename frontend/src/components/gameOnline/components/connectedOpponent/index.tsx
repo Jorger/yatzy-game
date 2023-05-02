@@ -1,7 +1,11 @@
+import { ETypeGame } from "../../../../utils/constants";
 import { useSocket } from "../../../../hooks";
 import { WaitOpponent } from "..";
-import React from "react";
+import Loading from "../../../loading";
+import React, { Suspense, lazy } from "react";
 import type { IAuth, TypeRoom } from "../../../../interfaces";
+
+const Game = lazy(() => import("../../../game"));
 
 interface ConnectedOpponentProps {
   state: IAuth;
@@ -22,13 +26,20 @@ const ConnectedOpponent = ({
     typeRoom,
   });
 
-  // console.log("authUser", authUser);
-
   if (!dataSocket) {
     return <WaitOpponent state={state} />;
   }
 
-  return <div>Mostrar Juego</div>;
+  return (
+    <Suspense fallback={<Loading />}>
+      <Game
+        {...dataSocket}
+        socket={socket}
+        authUser={authUser}
+        typeGame={ETypeGame.ONLINE}
+      />
+    </Suspense>
+  );
 };
 
 export default React.memo(ConnectedOpponent);

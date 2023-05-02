@@ -1,6 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import { isDev } from "../utils/helpers";
 import { useEffect, useState } from "react";
+import { useShowMessageRedirect } from ".";
 import type { Player, TotalPlayers, TypeRoom } from "../interfaces";
 
 let socket: Socket;
@@ -8,6 +9,11 @@ let socket: Socket;
 interface IDataSocket {
   initialTurn: TotalPlayers;
   opponent: Partial<Player>;
+  room: string;
+}
+interface INewOpponent {
+  IDTurn: string;
+  players: Partial<Player>[];
   room: string;
 }
 
@@ -20,6 +26,7 @@ interface IUseSocket {
 }
 
 const useSocket = (connectionData: IUseSocket) => {
+  const setRedirect = useShowMessageRedirect();
   const [dataSocket, setDataSocket] = useState<IDataSocket>();
 
   useEffect(() => {
@@ -30,8 +37,15 @@ const useSocket = (connectionData: IUseSocket) => {
     // Se hace la conexión con el socket
     socket = isDev() ? io(`http://localhost:${SOCKET_PORT}`) : io();
 
-    socket.on("connect_error", (error) => {
-      console.log("Error: ", error);
+    socket.on("connect_error", (_) => {
+      // Si existe un error de conexión se redirecciona el usuario...
+      setRedirect({
+        message: {
+          title: "Error connecting to socket",
+          icon: "error",
+          timer: 5000,
+        },
+      });
     });
 
     socket.on("connect", () => {
@@ -40,7 +54,26 @@ const useSocket = (connectionData: IUseSocket) => {
        * valida si hay errores...
        */
       socket.emit("NEW_USER", connectionData, (error: string) => {
-        console.log("ERROR NEW_USER", error);
+        // Si existe un error, muestra un mensaje y redirecciona el usuario.
+        setRedirect({
+          message: {
+            title: error,
+            icon: "error",
+            timer: 5000,
+          },
+        });
+      });
+
+      socket.on("NEW_OPPONENT", ({ IDTurn, players, room }: INewOpponent) => {
+        // Se define el turno inicial, dependiendo del valor regresado por el socket
+        // en este caso se definie a partir del id que llega del socket,
+        // comparando con el id del usuario final y así se sabe si es el turno 1 ó 2
+        const initialTurn: TotalPlayers = user.id === IDTurn ? 1 : 2;
+        // Se extrae el valor del opnente que por defecto es el
+        // id diferente al usuario actual
+        const opponent = players.filter((v) => v.id !== user.id)?.[0];
+        // Guarda la data en el estado, la cuale s enviada al componente que la necesite...
+        setDataSocket({ initialTurn, opponent, room });
       });
     });
 

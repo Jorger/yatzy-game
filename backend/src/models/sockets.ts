@@ -184,10 +184,11 @@ const startSocketServer = (server: Server) => {
             // Se actualiza la información en redis...
             setDataRedis(playersMatch);
 
+            // Era una sala que estaba completa...
             if (isFull) {
-              console.log("EMITIR UN SOCKET AL OPONENETE");
+              // Se debe emitir al otro usuario que el usuario se desconectó...
+              io.sockets.in(roomName).emit("OPPONENT_LEAVE");
             }
-
             break;
           }
         }
