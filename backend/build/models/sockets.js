@@ -83,7 +83,7 @@ const startSocketServer = (server) => {
                         delete playersMatch[roomName];
                         (0, redis_1.setDataRedis)(playersMatch);
                         if (isFull) {
-                            console.log("EMITIR UN SOCKET AL OPONENETE");
+                            io.sockets.in(roomName).emit("OPPONENT_LEAVE");
                         }
                         break;
                     }
