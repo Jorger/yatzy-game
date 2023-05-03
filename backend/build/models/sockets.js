@@ -69,11 +69,21 @@ const startSocketServer = (server) => {
             (0, redis_1.setDataRedis)(playersMatch);
             socket.join(room);
         });
+        socket.on("ACTIONS", async (data) => {
+            if (["ROLL", "PLAY"].includes(data.type)) {
+                if (data.type === "PLAY" && data.isGameOver) {
+                    const playersMatch = await (0, redis_1.getDataFromRedis)();
+                    if (playersMatch[data.room]) {
+                        delete playersMatch[data.room];
+                        (0, redis_1.setDataRedis)(playersMatch);
+                    }
+                }
+                socket.broadcast.to(data.room).emit(data.type, data);
+            }
+        });
         socket.on("disconnect", async () => {
             const playersMatch = await (0, redis_1.getDataFromRedis)();
             const playersMatchKey = Object.keys(playersMatch);
-            console.log("USUARIO SE DESCONECTA");
-            console.log({ socket: socket.id, playersMatch, playersMatchKey });
             if (playersMatchKey.length !== 0) {
                 for (let i = 0; i < playersMatchKey.length; i++) {
                     const room = playersMatch[playersMatchKey[i]];
@@ -91,6 +101,5 @@ const startSocketServer = (server) => {
             }
         });
     });
-    console.log("Sockets");
 };
 exports.default = startSocketServer;
