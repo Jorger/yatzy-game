@@ -157,12 +157,34 @@ const startSocketServer = (server: Server) => {
       }
     );
 
+    /**
+     * Socket que escucha los diferentes eventos del BOARD...
+     */
+    socket.on("ACTIONS", async (data) => {
+      // Sólo se permiten dos tipo de acciones...
+      if (["ROLL", "PLAY"].includes(data.type)) {
+        // Se valida si se debe eliminar la sala,
+        // sólo es aplicable cuando isGameOver es true
+        if (data.type === "PLAY" && data.isGameOver) {
+          const playersMatch = await getDataFromRedis();
+
+          if (playersMatch[data.room]) {
+            // Elimina la sala...
+            delete playersMatch[data.room];
+            // Actualiza la información en redis...
+            setDataRedis(playersMatch);
+          }
+        }
+        // Se emite la información al otro cliente...
+        // Sólo emite al otro cliente no al que hizo el envío...
+        socket.broadcast.to(data.room).emit(data.type, data);
+      }
+    });
+
     socket.on("disconnect", async () => {
       // Buscar si el socket id que se ha desconectado existe en redis...
       const playersMatch = await getDataFromRedis();
       const playersMatchKey = Object.keys(playersMatch);
-      console.log("USUARIO SE DESCONECTA");
-      console.log({ socket: socket.id, playersMatch, playersMatchKey });
 
       // Hay valores en redis...
       if (playersMatchKey.length !== 0) {
@@ -195,8 +217,6 @@ const startSocketServer = (server: Server) => {
       }
     });
   });
-
-  console.log("Sockets");
 };
 
 export default startSocketServer;
