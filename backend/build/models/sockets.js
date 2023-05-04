@@ -6,18 +6,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const redis_1 = require("../utils/redis");
 const helpers_1 = require("../utils/helpers");
 const socket_io_1 = require("socket.io");
-const user_1 = __importDefault(require("./user"));
-const startSocketServer = (server) => {
-    const io = new socket_io_1.Server(server);
+const passport_1 = __importDefault(require("passport"));
+const startSocketServer = (server, sessionMiddleware) => {
+    const io = new socket_io_1.Server(server, {
+        cors: {
+            credentials: true,
+        },
+    });
+    const wrapSocketRequest = (middleware) => {
+        return (socket, next) => {
+            return middleware(socket.request, {}, next);
+        };
+    };
+    io.use(wrapSocketRequest(sessionMiddleware));
+    io.use(wrapSocketRequest(passport_1.default.initialize()));
+    io.use(wrapSocketRequest(passport_1.default.session()));
     io.on("connection", (socket) => {
         socket.on("NEW_USER", async ({ user, typeRoom, room: customRoom = "", isCreatorRoom = false, isGuest = false, }, cb) => {
+            const request = socket.request;
             if (!isGuest) {
-                try {
-                    await user_1.default.findById(user.id);
+                if (request.isAuthenticated()) {
+                    const authUserID = request?.user._id?.toString() || "";
+                    if (authUserID !== user.id) {
+                        return cb?.("Invalid user");
+                    }
                 }
-                catch (_) {
-                    return cb?.("Invalid user");
+                else {
+                    return cb?.("Unauthenticated");
                 }
+            }
+            else if (request.isAuthenticated()) {
+                return cb?.("Authenticated");
             }
             let joinRoom = typeRoom === "FRIEND" && !isCreatorRoom ? customRoom : "";
             let playersMatch = await (0, redis_1.getDataFromRedis)();

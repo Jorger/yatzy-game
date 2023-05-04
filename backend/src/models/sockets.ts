@@ -1,9 +1,10 @@
 import { getDataFromRedis, setDataRedis } from "../utils/redis";
 import { guid, randomNumber } from "../utils/helpers";
+import { NextFunction, RequestHandler, Response, Request } from "express";
 import { Server } from "http";
-import { Server as SocketServer } from "socket.io";
+import { Socket, Server as SocketServer } from "socket.io";
+import passport from "passport";
 import type { IDataRoom, IRoom, IUserRoom, TypeRoom } from "../interfaces";
-import User from "./user";
 
 interface INewUser {
   typeRoom: TypeRoom;
@@ -13,8 +14,40 @@ interface INewUser {
   isGuest?: boolean;
 }
 
-const startSocketServer = (server: Server) => {
-  const io = new SocketServer(server);
+const startSocketServer = (
+  server: Server,
+  sessionMiddleware: RequestHandler
+) => {
+  const io = new SocketServer(server, {
+    cors: {
+      credentials: true,
+    },
+  });
+
+  /**
+   * Es un "adaptador" que permite que el middleware diseñado para Express se use con Socket.io.
+   * Permite que el middleware de Express procese la solicitud de Socket.io.
+   * https://github.com/socketio/socket.io/discussions/4470
+   * @param middleware
+   * @returns
+   */
+  const wrapSocketRequest = (
+    middleware: (req: Request, res: Response, next: NextFunction) => void
+  ) => {
+    return (socket: Socket, next: (err?: any) => void) => {
+      return middleware(socket.request as Request, {} as Response, next);
+    };
+  };
+
+  /**
+   * Se agrega la inicialización de Passport
+   * Se agrega la sesión de Passport:
+   * lo que permite que Passport persista los datos de autenticación
+   * de un usuario durante toda la sesión de WebSocket.
+   */
+  io.use(wrapSocketRequest(sessionMiddleware));
+  io.use(wrapSocketRequest(passport.initialize()));
+  io.use(wrapSocketRequest(passport.session()));
 
   io.on("connection", (socket) => {
     socket.on(
@@ -29,16 +62,27 @@ const startSocketServer = (server: Server) => {
         }: INewUser,
         cb?: (error: string) => void
       ) => {
-        // console.log("data es: ", user, typeRoom);
+        const request = socket.request as Request;
 
-        // Se valida que exista el usaurio en la base de datos...
         // No se valida si es un jugador invitado...
         if (!isGuest) {
-          try {
-            await User.findById(user.id);
-          } catch (_) {
-            return cb?.("Invalid user");
+          // Se valida que el usuario esté autenticado...
+          if (request.isAuthenticated()) {
+            // Comparara que el usuario autenticado, sea el mismo que
+            // se ha enviado desde el front
+            const authUserID = request?.user._id?.toString() || "";
+            // Si no es el mismo se indica el error
+            if (authUserID !== user.id) {
+              return cb?.("Invalid user");
+            }
+          } else {
+            // Se devuleve el error que el usuario no está auténticado a cliente...
+            return cb?.("Unauthenticated");
           }
+        } else if (request.isAuthenticated()) {
+          // Se indica que el usuario ya etsá auténticado,
+          // por lo tanto no puede jugar como invitado...
+          return cb?.("Authenticated");
         }
 
         // Para la sala a la cual se uniará el oponente
@@ -50,8 +94,6 @@ const startSocketServer = (server: Server) => {
         // Obtener los usuarios que estén actualmente esperando...
         // Se deja let por que puede que cambie
         let playersMatch: IRoom = await getDataFromRedis();
-
-        // console.log("playersMatch", playersMatch);
 
         /**
          * Ingresa si hay datos en redis y además que el tipo de jugabilidad sea ONLINE
