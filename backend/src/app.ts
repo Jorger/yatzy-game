@@ -43,19 +43,20 @@ const isProduction = process.env.NODE_ENV === "production";
  * Para la creación de la sesión...
  */
 app.use(cookieParser());
-app.use(
-  session({
-    secret: CONFIG.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: redisStore,
-    cookie: {
-      secure: isProduction,
-      httpOnly: isProduction,
-      maxAge: new Date(Date.now() + 5184000000).getTime(),
-    },
-  })
-);
+
+const sessionMiddleware = session({
+  secret: CONFIG.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: redisStore,
+  cookie: {
+    secure: isProduction,
+    httpOnly: isProduction,
+    maxAge: new Date(Date.now() + 5184000000).getTime(),
+  },
+});
+
+app.use(sessionMiddleware);
 
 /**
  Se relaciona passport con express...
@@ -98,7 +99,7 @@ connectDB((error) => {
     console.log("MongoDB connected successfully!");
 
     // Se configura los sockets...
-    startSocketServer(server);
+    startSocketServer(server, sessionMiddleware);
 
     // Se sube el server...
     return server.listen(PORT, () => {

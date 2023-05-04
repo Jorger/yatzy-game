@@ -2,6 +2,7 @@ import { io, Socket } from "socket.io-client";
 import { isDev } from "../utils/helpers";
 import { useEffect, useState } from "react";
 import { useShowMessageRedirect } from ".";
+import swal from "sweetalert";
 import type { Player, TotalPlayers, TypeRoom } from "../interfaces";
 
 let socket: Socket;
@@ -34,8 +35,10 @@ const useSocket = (connectionData: IUseSocket) => {
 
     // Se obtiene el valor del puerto de conexión, sólo aplicable para desarrollo...
     const SOCKET_PORT = process.env.REACT_APP_API_PORT || 3000;
+    // Se establece la URL de conexión...
+    const socketURL = isDev() ? `http://localhost:${SOCKET_PORT}` : "/";
     // Se hace la conexión con el socket
-    socket = isDev() ? io(`http://localhost:${SOCKET_PORT}`) : io();
+    socket = io(socketURL, { withCredentials: true });
 
     socket.on("connect_error", (_) => {
       // Si existe un error de conexión se redirecciona el usuario...
@@ -55,13 +58,32 @@ const useSocket = (connectionData: IUseSocket) => {
        */
       socket.emit("NEW_USER", connectionData, (error: string) => {
         // Si existe un error, muestra un mensaje y redirecciona el usuario.
-        setRedirect({
-          message: {
+        if (!["Authenticated", "Unauthenticated"].includes(error)) {
+          setRedirect({
+            message: {
+              title: error,
+              icon: "error",
+              timer: 5000,
+            },
+          });
+        } else {
+          // Si el error es que el usuario está o no está auténticado.
+          // se muestra el mensaje y se hace una recarga de la página
+          // para así actualizar la información en el cliente
+          const text = {
+            Authenticated: "You are already authenticated",
+            Unauthenticated: "You are not authenticated",
+          };
+
+          swal({
             title: error,
-            icon: "error",
+            text: text[error as keyof typeof text],
+            icon: "info",
+            closeOnClickOutside: false,
+            closeOnEsc: false,
             timer: 5000,
-          },
-        });
+          }).then(() => window.location.reload());
+        }
       });
 
       socket.on("NEW_OPPONENT", ({ IDTurn, players, room }: INewOpponent) => {
