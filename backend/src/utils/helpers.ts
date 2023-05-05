@@ -1,3 +1,5 @@
+import CONFIG from "../config";
+
 /**
  * Valida si un string es un JSON valido...
  * @param json
@@ -32,3 +34,13 @@ export const guid = () => {
  */
 export const randomNumber = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
+
+/**
+ * Valida que el nombre de la sala sea válido...
+ * @param value
+ * @returns
+ */
+export const isAValidRoom = (value: string) => {
+  const numRegex = /^[1-9]\d*$/;
+  return numRegex.test(value) && value.length === CONFIG.ROOM_SIZE_RANGE;
+};

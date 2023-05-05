@@ -1,0 +1,62 @@
+.play-with-friend {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+}
+
+.play-with-friend .logo {
+  margin-bottom: 40px;
+}
+
+.play-with-friend .avatar-image {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.play-with-friend-join {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.play-with-friend-code {
+  border-radius: 10px 0 0 10px;
+  border: none;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  font-size: 25px;
+  padding: 5px;
+  text-align: center;
+  width: 70%;
+}
+
+.play-with-friend-join .button {
+  border-radius: 0 10px 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  height: 36px;
+  padding: 5px;
+  text-transform: uppercase;
+  transform: translateY(-3px);
+  width: 30%;
+}
+
+.play-with-friend h2 {
+  color: var(--bg-white);
+  font-weight: bold;
+  margin: 20px 0;
+  text-shadow: 0px 3px 1px var(--bg-navy);
+}
+
+.play-with-friend-new-room {
+  font-size: 15px;
+  font-weight: bold;
+  padding: 10px;
+  text-transform: uppercase;
+}

@@ -24,10 +24,12 @@ const ConnectedOpponent = ({
   const { socket, dataSocket } = useSocket({
     user: authUser,
     typeRoom,
+    room,
+    isCreatorRoom,
   });
 
   if (!dataSocket) {
-    return <WaitOpponent state={state} />;
+    return <WaitOpponent state={state} room={room} />;
   }
 
   return (
