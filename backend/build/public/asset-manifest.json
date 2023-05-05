@@ -1,20 +1,21 @@
 {
   "files": {
     "main.css": "/static/css/main.38694207.css",
-    "main.js": "/static/js/main.84c9eb8e.js",
-    "static/css/219.22b8c5bb.chunk.css": "/static/css/219.22b8c5bb.chunk.css",
-    "static/js/219.eb5dd042.chunk.js": "/static/js/219.eb5dd042.chunk.js",
-    "static/css/665.fabebf3a.chunk.css": "/static/css/665.fabebf3a.chunk.css",
-    "static/js/665.d81171d7.chunk.js": "/static/js/665.d81171d7.chunk.js",
-    "static/css/795.fef2708e.chunk.css": "/static/css/795.fef2708e.chunk.css",
-    "static/js/795.5d32cd6c.chunk.js": "/static/js/795.5d32cd6c.chunk.js",
-    "static/css/230.171d2145.chunk.css": "/static/css/230.171d2145.chunk.css",
-    "static/js/230.94efd2b6.chunk.js": "/static/js/230.94efd2b6.chunk.js",
+    "main.js": "/static/js/main.6a4bf9e0.js",
+    "static/css/219.45096f36.chunk.css": "/static/css/219.45096f36.chunk.css",
+    "static/js/219.db479659.chunk.js": "/static/js/219.db479659.chunk.js",
+    "static/css/665.744cd640.chunk.css": "/static/css/665.744cd640.chunk.css",
+    "static/js/665.65de416b.chunk.js": "/static/js/665.65de416b.chunk.js",
+    "static/js/247.46add2fe.chunk.js": "/static/js/247.46add2fe.chunk.js",
+    "static/css/795.ef6b09fe.chunk.css": "/static/css/795.ef6b09fe.chunk.css",
+    "static/js/795.2972d2b6.chunk.js": "/static/js/795.2972d2b6.chunk.js",
+    "static/css/583.75ffa108.chunk.css": "/static/css/583.75ffa108.chunk.css",
+    "static/js/583.54fa6ef3.chunk.js": "/static/js/583.54fa6ef3.chunk.js",
     "static/js/962.bee715ae.chunk.js": "/static/js/962.bee715ae.chunk.js",
     "static/js/312.5f066017.chunk.js": "/static/js/312.5f066017.chunk.js",
     "static/js/654.eee7e9c4.chunk.js": "/static/js/654.eee7e9c4.chunk.js",
-    "static/css/698.b064ad54.chunk.css": "/static/css/698.b064ad54.chunk.css",
-    "static/js/698.b538c663.chunk.js": "/static/js/698.b538c663.chunk.js",
+    "static/css/206.31adfed9.chunk.css": "/static/css/206.31adfed9.chunk.css",
+    "static/js/206.e8c85932.chunk.js": "/static/js/206.e8c85932.chunk.js",
     "static/media/background_sound.mp3": "/static/media/background_sound.0c489010027dbfc3d65e.mp3",
     "static/media/sounds.mp3": "/static/media/sounds.65267deed3207aacc91c.mp3",
     "service-worker.js": "/service-worker.js",
@@ -22,6 +23,6 @@
   },
   "entrypoints": [
     "static/css/main.38694207.css",
-    "static/js/main.84c9eb8e.js"
+    "static/js/main.6a4bf9e0.js"
   ]
 }
