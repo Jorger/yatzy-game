@@ -1,3 +1,5 @@
+import { ROOM_SIZE_RANGE_BASE } from "./constants";
+
 export const $ = document.querySelector.bind(document);
 export const $$ = document.querySelectorAll.bind(document);
 
@@ -42,3 +44,17 @@ export const copyToClipboard = (text: string = "") => {
  * @returns
  */
 export const isDev = () => process.env.NODE_ENV === "development";
+
+/**
+ * Valida si el valor de una sala en la jugabilidad online es valida
+ * @param value
+ * @param roomRange
+ * @returns
+ */
+export const isAValidRoom = (
+  value: string,
+  roomRange = ROOM_SIZE_RANGE_BASE
+) => {
+  const numRegex = /^[1-9]\d*$/;
+  return numRegex.test(value) && value.length <= roomRange;
+};

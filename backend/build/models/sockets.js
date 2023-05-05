@@ -24,6 +24,9 @@ const startSocketServer = (server, sessionMiddleware) => {
     io.on("connection", (socket) => {
         socket.on("NEW_USER", async ({ user, typeRoom, room: customRoom = "", isCreatorRoom = false, isGuest = false, }, cb) => {
             const request = socket.request;
+            if (typeRoom === "FRIEND" && !(0, helpers_1.isAValidRoom)(customRoom)) {
+                return cb?.("Invalid room");
+            }
             if (!isGuest) {
                 if (request.isAuthenticated()) {
                     const authUserID = request?.user._id?.toString() || "";

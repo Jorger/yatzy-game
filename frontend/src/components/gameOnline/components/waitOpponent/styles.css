@@ -23,3 +23,32 @@
   right: 20px;
   top: 20px;
 }
+
+.wait-opponent-share {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
+.wait-opponent-code {
+  color: var(--bg-white);
+  font-size: 60px;
+  font-weight: bold;
+  text-shadow: 0px 3px 1px var(--bg-navy);
+  margin-bottom: 5px;
+}
+
+.wait-opponent-share .button {
+  font-size: 20px;
+  margin-bottom: 30px;
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+.wait-opponent-share p {
+  color: var(--bg-white);
+  text-align: center;
+  text-shadow: 0px 1px 1px var(--bg-navy);
+}

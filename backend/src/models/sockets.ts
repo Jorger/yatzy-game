@@ -1,5 +1,5 @@
 import { getDataFromRedis, setDataRedis } from "../utils/redis";
-import { guid, randomNumber } from "../utils/helpers";
+import { guid, isAValidRoom, randomNumber } from "../utils/helpers";
 import { NextFunction, RequestHandler, Response, Request } from "express";
 import { Server } from "http";
 import { Socket, Server as SocketServer } from "socket.io";
@@ -63,6 +63,10 @@ const startSocketServer = (
         cb?: (error: string) => void
       ) => {
         const request = socket.request as Request;
+
+        if (typeRoom === "FRIEND" && !isAValidRoom(customRoom)) {
+          return cb?.("Invalid room");
+        }
 
         // No se valida si es un jugador invitado...
         if (!isGuest) {
