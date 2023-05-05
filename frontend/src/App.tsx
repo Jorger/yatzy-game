@@ -6,6 +6,7 @@ import React, { Suspense, lazy } from "react";
 
 const AboutPage = lazy(() => import("./pages/about"));
 const GamePage = lazy(() => import("./pages/game"));
+const Guest = lazy(() => import("./pages/guest"));
 const Lobby = lazy(() => import("./pages/lobby"));
 const Online = lazy(() => import("./pages/online"));
 
@@ -19,6 +20,7 @@ const App = () => (
           <Route path="/game/:type" index element={<GamePage />} />
           <Route path="/about" index element={<AboutPage />} />
           <Route path="/online" index element={<Online />} />
+          <Route path="/guest" index element={<Guest />} />
         </Routes>
       </BrowserRouter>
     </Suspense>
