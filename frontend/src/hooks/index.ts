@@ -3,6 +3,7 @@ import useInterval from "./useInterval";
 import useShowMessageRedirect from "./useShowMessageRedirect";
 import useSocket from "./useSocket";
 import useSounds from "./useSounds";
+import useUpdateServiceWorker from "./useUpdateServiceWorker";
 import useWindowResize from "./useWindowResize";
 
 export {
@@ -11,5 +12,6 @@ export {
   useShowMessageRedirect,
   useSocket,
   useSounds,
+  useUpdateServiceWorker,
   useWindowResize,
 };
