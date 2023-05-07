@@ -1,13 +1,17 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "engines": {
+    "node": "18.x"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
     "build:dev": "tsc -w",
     "start:dev": "node --watch build/app.js",
     "build:ui": "tsc && cd ../frontend && npm run build:public",
-    "start": "node build/app.js"
+    "start": "node build/app.js",
+    "deploy": "npm run build:ui && git push heroku main"
   },
   "keywords": [],
   "author": "",
