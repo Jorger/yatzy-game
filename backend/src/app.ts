@@ -23,7 +23,6 @@ passportController();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
-app.enable("trust proxy");
 
 // Para servir los archivos estáticos del juego
 app.use(express.static(path.join(__dirname, "/public")));
@@ -34,6 +33,12 @@ app.use(helmet.hidePoweredBy());
 // Para compresión de archivo gzip...
 app.use(compression());
 app.use(express.json());
+app.enable("trust proxy");
+
+// Variable que establece si se está ejecuntado en el ambiente de production
+// Al estar en true habilitará las propiedades de secure y httpOnly, indicando
+// que sólo se transfiera cookies por una navegación segura (https)
+const isProduction = process.env.NODE_ENV === "production";
 
 /**
  * Para la creación de la sesión...
@@ -46,8 +51,8 @@ const sessionMiddleware = session({
   saveUninitialized: false,
   store: redisStore,
   cookie: {
-    secure: false,
-    httpOnly: false,
+    secure: isProduction,
+    httpOnly: isProduction,
     maxAge: new Date(Date.now() + 5184000000).getTime(),
   },
 });

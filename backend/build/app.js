@@ -21,12 +21,13 @@ const sockets_1 = __importDefault(require("./models/sockets"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 const server = http_1.default.createServer(app);
-app.enable("trust proxy");
 app.use(express_1.default.static(path_1.default.join(__dirname, "/public")));
 app.use((0, helmet_1.default)());
 app.use(helmet_1.default.hidePoweredBy());
 app.use((0, compression_1.default)());
 app.use(express_1.default.json());
+app.enable("trust proxy");
+const isProduction = process.env.NODE_ENV === "production";
 app.use((0, cookie_parser_1.default)());
 const sessionMiddleware = (0, express_session_1.default)({
     secret: config_1.default.SESSION_SECRET,
@@ -34,8 +35,8 @@ const sessionMiddleware = (0, express_session_1.default)({
     saveUninitialized: false,
     store: redis_1.default,
     cookie: {
-        secure: false,
-        httpOnly: false,
+        secure: isProduction,
+        httpOnly: isProduction,
         maxAge: new Date(Date.now() + 5184000000).getTime(),
     },
 });
