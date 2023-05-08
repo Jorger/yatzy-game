@@ -39,6 +39,8 @@ app.use(express.json());
 // que sólo se transfiera cookies por una navegación segura (https)
 const isProduction = process.env.NODE_ENV === "production";
 
+console.log({ isProduction });
+
 /**
  * Para la creación de la sesión...
  */
