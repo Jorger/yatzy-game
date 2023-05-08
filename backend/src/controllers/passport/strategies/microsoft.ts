@@ -5,7 +5,7 @@ import type { CallbackAuth, DoneFunction } from "../../../interfaces";
 
 // Se deja por fuera para poderlo reusar en dos partes...
 const callbackURL = "/api/auth/microsoft/callback";
-const isEnabled = !!(CONFIG.GOOGLE.KEY && CONFIG.GOOGLE.SECRET);
+const isEnabled = !!(CONFIG.MICROSOFT.KEY && CONFIG.MICROSOFT.SECRET);
 
 export default {
   isEnabled,

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = __importDefault(require("../../../config"));
 const passport_microsoft_1 = __importDefault(require("passport-microsoft"));
 const callbackURL = "/api/auth/microsoft/callback";
-const isEnabled = !!(config_1.default.GOOGLE.KEY && config_1.default.GOOGLE.SECRET);
+const isEnabled = !!(config_1.default.MICROSOFT.KEY && config_1.default.MICROSOFT.SECRET);
 exports.default = {
     isEnabled,
     callbackURL,
