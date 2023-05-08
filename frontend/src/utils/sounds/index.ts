@@ -24,7 +24,7 @@ export const sounds = new Howl({
  * @param sound
  */
 export const playSounds = (sound: "click" | "dice" | "yatzy") => {
-  if (getValueFromCache("sounds", "no") === "yes") {
+  if (getValueFromCache("sounds", "yes") === "yes") {
     sounds.play(sound);
   }
 };
