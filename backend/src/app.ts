@@ -52,8 +52,8 @@ const sessionMiddleware = session({
   saveUninitialized: false,
   store: redisStore,
   cookie: {
-    secure: isProduction,
-    httpOnly: isProduction,
+    secure: false,
+    httpOnly: false,
     maxAge: new Date(Date.now() + 5184000000).getTime(),
   },
 });

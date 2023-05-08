@@ -35,8 +35,8 @@ const sessionMiddleware = (0, express_session_1.default)({
     saveUninitialized: false,
     store: redis_1.default,
     cookie: {
-        secure: isProduction,
-        httpOnly: isProduction,
+        secure: false,
+        httpOnly: false,
         maxAge: new Date(Date.now() + 5184000000).getTime(),
     },
 });
