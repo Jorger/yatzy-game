@@ -21,6 +21,8 @@ export const sounds = new Howl({
 
 /**
  * Helper que valida si el sonido está habilitado...
+ * Consume la información que está en localstorage
+ * Por defecto el valor es yes, indicando que si está habilitado.
  * @param sound
  */
 export const playSounds = (sound: "click" | "dice" | "yatzy") => {

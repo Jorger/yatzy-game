@@ -34,13 +34,6 @@ app.use(helmet.hidePoweredBy());
 app.use(compression());
 app.use(express.json());
 
-// Variable que establece si se está ejecuntado en el ambiente de production
-// Al estar en true habilitará las propiedades de secure y httpOnly, indicando
-// que sólo se transfiera cookies por una navegación segura (https)
-const isProduction = process.env.NODE_ENV === "production";
-
-console.log({ isProduction });
-
 /**
  * Para la creación de la sesión...
  */
