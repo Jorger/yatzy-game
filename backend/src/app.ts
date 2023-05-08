@@ -23,6 +23,7 @@ passportController();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
+app.enable("trust proxy");
 
 // Para servir los archivos estáticos del juego
 app.use(express.static(path.join(__dirname, "/public")));

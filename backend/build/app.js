@@ -21,6 +21,7 @@ const sockets_1 = __importDefault(require("./models/sockets"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 const server = http_1.default.createServer(app);
+app.enable("trust proxy");
 app.use(express_1.default.static(path_1.default.join(__dirname, "/public")));
 app.use((0, helmet_1.default)());
 app.use(helmet_1.default.hidePoweredBy());
