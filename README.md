@@ -4,7 +4,15 @@ Yatzy es un juego de dados, cuyo objetivo es obtener la mayor puntuación posibl
 
 # Curso en Udemy.
 
-A través del curso de Udemy: ["Aprende a desarrollar un juego de Yatzy con ReactJS/NodeJS"](https://www.udemy.com/course/aprende-a-desarrollar-un-juego-de-yatzy-con-react/?utm_medium=email&utm_campaign=email&utm_source=sendgrid.com), se aprenderá a desarrollar este juego desde cero.
+![Imagen_curso_02](https://github.com/Jorger/yatzy-game/assets/30050/48a6cd57-7d0c-44c1-a7bb-ac457947d7eb)
+
+A través del curso de Udemy: ["Aprende a desarrollar un juego de Yatzy con ReactJS/NodeJS"](https://www.udemy.com/course/aprende-a-desarrollar-un-juego-de-yatzy-con-react), se aprenderá a desarrollar este juego desde cero.
+
+# URL del juego.
+
+Es posible jugar el Juego en: https://yatzy-react-game.herokuapp.com/
+
+En el [curso de UDEMY](https://www.udemy.com/course/aprende-a-desarrollar-un-juego-de-yatzy-con-react), aprenderás como es posible desplegar este juego.
 
 ## Reglas.
 
@@ -48,6 +56,10 @@ En el presente juego, desarrollado en el frontend con ReactJS/Typescript y el ba
 
 Para la opción Online, se hace uso de lo siguiente:
 
-* NodeJS con Typescriot.
+* NodeJS con Typescript.
+* PassportJS, con tres esrtragegías de autenticación (Google, Github y Microsoft)
+* Socket.io, para jugabalidad online.
+
+
 
 
