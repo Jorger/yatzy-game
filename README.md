@@ -4,7 +4,8 @@ Yatzy es un juego de dados, cuyo objetivo es obtener la mayor puntuación posibl
 
 # 🎓 Curso en Udemy.
 
-![Imagen_curso_02](https://github.com/Jorger/yatzy-game/assets/30050/48a6cd57-7d0c-44c1-a7bb-ac457947d7eb)
+![Imagen_curso_02](https://github.com/Jorger/yatzy-game/assets/30050/462b7ec9-a892-42e8-978d-8b9cb706cea0)
+
 
 A través del curso de Udemy: ["Aprende a desarrollar un juego de Yatzy con ReactJS/NodeJS"](https://www.udemy.com/course/aprende-a-desarrollar-un-juego-de-yatzy-con-react), se aprenderá a desarrollar este juego desde cero.
 
@@ -24,14 +25,14 @@ La tabla se divide en dos secciones:
 
 ### ⬆️ Upper section
 
-![image](https://github.com/Jorger/yatzy-game/assets/30050/a98af66d-d49f-48b5-8dd2-d17692d26aee)
+![image](https://github.com/Jorger/yatzy-game/assets/30050/6b129a68-cee3-42b3-a253-3801508d059f)
 
 En la sección superior de la hoja de puntuación, hay seis categorías diferentes: uno, dos, tres, cuatro, cinco y seis. Cada categoría representa la suma de los dados que muestran el número correspondiente. Por ejemplo, si un jugador lanza los dados y obtiene tres dados que muestran el número dos, la puntuación que puede anotar en la categoría "dos" es de 6 puntos (2+2+2=6).
 Es importante tener en cuenta que solo se puede anotar una puntuación en cada categoría de la sección superior. Por ejemplo, si un jugador ya ha anotado 6 puntos en la categoría "dos", no puede volver a anotar en esa categoría, incluso si obtiene más dados que muestran el número dos en lanzamientos posteriores.
 
 ### ⬇️ Lower section
 
-![image](https://github.com/Jorger/yatzy-game/assets/30050/dc2ee9f2-bfb5-4d02-94fd-89dc10f97a19)
+![image](https://github.com/Jorger/yatzy-game/assets/30050/eeeffd9b-d642-4510-9898-225f1c5bfe9a)
 
 * Three of a kind (Tres iguales): Si el jugador tiene al menos tres dados iguales, se anotan la suma de todos los dados. Por ejemplo, si el jugador tiene 2-3-4-4-4, se anotan 17 puntos
 * Four of a kind (Cuatro iguales): Si el jugador tiene al menos cuatro dados iguales, se anotan la suma de todos los dados. Por ejemplo, si el jugador tiene 4-5-5-5-5, se anotan 24 puntos 
@@ -43,7 +44,7 @@ Es importante tener en cuenta que solo se puede anotar una puntuación en cada c
 
 ## 🎲 El juego.
 
-![Screen Recording 2023-05-15 at 9 03 59 AM](https://github.com/Jorger/yatzy-game/assets/30050/1d932890-867b-4e95-b811-79f48b92b468)
+![Screen Recording 2023-05-15 at 9 03 59 AM](https://github.com/Jorger/yatzy-game/assets/30050/6d672cab-8cea-425d-bf8d-24d12424f319)
 
 En el presente juego, desarrollado en el frontend con ReactJS/Typescript y el backend con Nodejs/Typescript, tiene 4 modalidades de juego como son:
 
@@ -54,8 +55,7 @@ En el presente juego, desarrollado en el frontend con ReactJS/Typescript y el ba
 
 ## 🌐 Opción Online.
 
-![Screen Recording 2023-05-15 at 9 43 56 AM](https://github.com/Jorger/yatzy-game/assets/30050/47e9f5fc-87c7-4e17-8479-e2a60c8f24cc)
-
+![Screen Recording 2023-05-15 at 9 43 56 AM](https://github.com/Jorger/yatzy-game/assets/30050/783d7c0e-8792-4485-9846-3d3c9ef373c0)
 
 Para la opción Online, se hace uso de lo siguiente:
 
